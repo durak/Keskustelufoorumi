@@ -9,23 +9,23 @@ import keskustelufoorumi.database.AlueDao;
 import keskustelufoorumi.database.LankaDao;
 import keskustelufoorumi.database.ViestiDao;
 
-public class DaoManager {
+public class DaoManagerBS {
 
     protected String databaseAddress = null;
     protected Connection connection = null;
-    protected KayttajaDao kayttajaDao = null;
+    protected KayttajaDao2 kayttajaDao = null;
     protected AlueDao alueDao = null;
     protected LankaDao lankaDao = null;
     protected ViestiDao viestiDao = null;
 
-    public DaoManager() {
+    public DaoManagerBS() {
         this.databaseAddress = "jdbc:sqlite:forum.db";
 
     }
 
-    public KayttajaDao kayttajaDao() {
+    public KayttajaDao2 kayttajaDao() {
         if (this.kayttajaDao == null) {
-            this.kayttajaDao = new KayttajaDao(this.connection);
+            this.kayttajaDao = new KayttajaDao2(this.connection);
         }
 
         return this.kayttajaDao;
@@ -65,15 +65,15 @@ public class DaoManager {
         }
     }
 
-    public Object transactionAndClose(DaoCommand command) throws SQLException {
-        executeAndClose(new DaoCommand() {
-            public Object execute(DaoManager manager) {
-                try {
-                    manager.transaction(command);
-                } catch (SQLException ex) {
-                    Logger.getLogger(DaoManager.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-    }
+//    public Object transactionAndClose(DaoCommand command) throws SQLException {
+//        executeAndClose(new DaoCommand() {
+//            public Object execute(DaoManager manager) {
+//                try {
+//                    manager.transaction(command);
+//                } catch (SQLException ex) {
+//                    Logger.getLogger(DaoManager.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        });
+//    }
 }

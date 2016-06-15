@@ -6,11 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import keskustelufoorumi.domain.Kayttaja;
 
-public class KayttajaDao extends GenericDao<Kayttaja> {
+public class KayttajaDao2 extends GenericDao<Kayttaja> {
 
     private final static String TABLENAME = "Kayttaja";
 
-    public KayttajaDao(Connection connection) {
+    public KayttajaDao2(Connection connection) {
         super(connection, TABLENAME);
     }
 
@@ -28,5 +28,28 @@ public class KayttajaDao extends GenericDao<Kayttaja> {
             throw e;
         }
 
+    }
+    
+        
+    public Kayttaja findOne(String key) throws SQLException {        
+
+        String query = "SELECT * FROM Kayttaja WHERE id = ?";
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setObject(1, key);
+
+        ResultSet rs = stmt.executeQuery();
+        boolean hasOne = rs.next();
+        if (!hasOne) {
+            return null;
+        }
+
+        String id = rs.getString("id");
+        Kayttaja k = new Kayttaja(id);
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return k;
     }
 }

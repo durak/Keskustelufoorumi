@@ -5,18 +5,18 @@ import java.sql.*;
 import java.util.*;
 
 public class KayttajaDao implements Dao<Kayttaja, String> {
+    
+    private Connection connection;
 
-    private Database database;
-
-    public KayttajaDao(Database database) {
-        this.database = database;
+    public KayttajaDao(Connection connection) {
+        
+        this.connection = connection;
     }
 
     @Override
     public Kayttaja findOne(String key) throws SQLException {
-        Connection connection = database.getConnection();
 
-        String query = "SELECT * FROM Kayttaja WHERE kayttajatunnus = ?";
+        String query = "SELECT * FROM Kayttaja WHERE id = ?";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setObject(1, key);
 
@@ -26,19 +26,18 @@ public class KayttajaDao implements Dao<Kayttaja, String> {
             return null;
         }
 
-        String kayttajatunnus = rs.getString("kayttajatunnus");
-        Kayttaja k = new Kayttaja(kayttajatunnus);
+        String id = rs.getString("id");
+        Kayttaja k = new Kayttaja(id);
 
         rs.close();
         stmt.close();
-        connection.close();
+//        connection.close();
 
         return k;
     }
 
     @Override
-    public List<Kayttaja> findAll() throws SQLException {
-        Connection connection = database.getConnection();
+    public List<Kayttaja> findAll() throws SQLException {        
 
         String query = "SELECT * FROM Kayttaja";
         PreparedStatement stmt = connection.prepareStatement(query);
@@ -47,13 +46,13 @@ public class KayttajaDao implements Dao<Kayttaja, String> {
         List<Kayttaja> kayttajat = new ArrayList<>();
 
         while (rs.next()) {
-            String kayttajatunnus = rs.getString("kayttajatunnus");
-            kayttajat.add(new Kayttaja(kayttajatunnus));
+            String id = rs.getString("id");
+            kayttajat.add(new Kayttaja(id));
         }
 
         rs.close();
         stmt.close();
-        connection.close();
+//        connection.close();
 
         return kayttajat;
     }
@@ -67,11 +66,9 @@ public class KayttajaDao implements Dao<Kayttaja, String> {
         StringBuilder muuttujat = new StringBuilder("?");
         for (int i = 0; i < keys.size(); i++) {
             muuttujat.append(", ?");
-        }
+        }       
 
-        Connection connection = database.getConnection();
-
-        String query = "SELECT * FROM Kayttaja WHERE kayttajatunnus IN (" + muuttujat + ")";
+        String query = "SELECT * FROM Kayttaja WHERE id IN (" + muuttujat + ")";
         PreparedStatement stmt = connection.prepareStatement(query);
 
         int laskuri = 1;
@@ -84,29 +81,29 @@ public class KayttajaDao implements Dao<Kayttaja, String> {
         List<Kayttaja> kayttajat = new ArrayList<>();
 
         while (rs.next()) {
-            String kayttajatunnus = rs.getString("kayttajatunnus");
-            kayttajat.add(new Kayttaja(kayttajatunnus));
+            String id = rs.getString("id");
+            kayttajat.add(new Kayttaja(id));
         }
 
         rs.close();
         stmt.close();
-        connection.close();
+//        connection.close();
 
         return kayttajat;
     }
 
     @Override
     public void delete(String key) throws SQLException {
-        Connection connection = database.getConnection();
+//        Connection connection = database.getConnection();
 
-        String query = "DELETE FROM Kayttaja WHERE kayttajatunnus = ?";
+        String query = "DELETE FROM Kayttaja WHERE id = ?";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setObject(1, key);
 
         stmt.executeUpdate();
         
         stmt.close();
-        connection.close();                       
+//        connection.close();                       
     }
 
     @Override
@@ -116,7 +113,7 @@ public class KayttajaDao implements Dao<Kayttaja, String> {
 
     @Override
     public void update(String updateQuery, Object... params) throws SQLException {
-        Connection connection = database.getConnection();
+        
         PreparedStatement stmt = connection.prepareStatement(updateQuery);
 
         for (int i = 0; i < params.length; i++) {
@@ -126,7 +123,14 @@ public class KayttajaDao implements Dao<Kayttaja, String> {
         stmt.executeUpdate();
 
         stmt.close();
-        connection.close();
+//        connection.close();
+    }
+    
+    
+    public void insertNewKayttaja(Kayttaja kayttaja) throws SQLException {
+        String updateQuery = "INSERT INTO Kayttaja VALUES (?)";
+        String[] params = {kayttaja.getId()};
+        update(updateQuery, params);                
     }
 
 }

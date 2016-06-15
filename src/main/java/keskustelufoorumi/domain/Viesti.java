@@ -4,14 +4,14 @@ import java.sql.*;
 
 public class Viesti {
     
-    private int viestitunnus;
+    private int id;
     private String sisalto;
     private Kayttaja kayttaja;
     private Lanka lanka;
-    private String lahetysaika;
+    private Timestamp lahetysaika;
     
-    public Viesti(int viestitunnus, String sisalto, Kayttaja kayttaja, Lanka lanka, String lahetysaika) {
-        this.viestitunnus = viestitunnus;
+    public Viesti(int id, String sisalto, Kayttaja kayttaja, Lanka lanka, Timestamp lahetysaika) {
+        this.id = id;
         this.sisalto = sisalto;
         this.kayttaja = kayttaja;
         this.lanka = lanka;
@@ -22,7 +22,7 @@ public class Viesti {
     // GETTERIT
     
     public int getViestitunnus() {
-        return viestitunnus;
+        return id;
     }
     
     public String getSisalto() {
@@ -37,14 +37,14 @@ public class Viesti {
         return lanka;
     }
     
-    public String getLahetysaika() {
+    public Timestamp getLahetysaika() {
         return lahetysaika;
     }
     
     // SETTERIT
     
     public void setViestitunnus(int viestitunnus) {
-        this.viestitunnus = viestitunnus;                
+        this.id = viestitunnus;                
     }
     
     public void setSisalto(String sisalto) {
@@ -59,7 +59,7 @@ public class Viesti {
         this.lanka = lanka;
     }
     
-    public void setLahetysaika(String lahetysaika) {
+    public void setLahetysaika(Timestamp lahetysaika) {
         this.lahetysaika = lahetysaika;
     }
     
