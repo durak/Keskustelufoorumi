@@ -27,7 +27,7 @@ public class AlueDao implements Dao<Alue, Integer> {
         if (!hasOne) {
             return null;
         }
-        
+
         int id = rs.getInt("id");
         String aluenimi = rs.getString("aluenimi");
         int alueviestimaara = rs.getInt("alueviestimaara");
@@ -78,7 +78,6 @@ public class AlueDao implements Dao<Alue, Integer> {
         }
 
 //        Connection connection = database.getConnection();
-
         String query = "SELECT * FROM Alue WHERE id IN (" + muuttujat + ")";
         PreparedStatement stmt = connection.prepareStatement(query);
 
@@ -139,19 +138,31 @@ public class AlueDao implements Dao<Alue, Integer> {
         stmt.close();
 //        connection.close();
     }
-    
+
     public void insertNewAlue(Alue alue) throws SQLException {
         String updateQuery = "INSERT INTO Alue (aluenimi, alueviestimaara, viimeisin_aika) VALUES (?, ?, ?)";
         Object[] params = {alue.getAluenimi(), alue.getAlueviestimaara(), alue.getViimeisinAika()};
         update(updateQuery, params);
     }
-    
+
     public void updateAlue(Alue alue) throws SQLException {
         String updateQuery = "UPDATE Alue SET alueviestimaara = ?, viimeisin_aika = ? WHERE id = ?";
         Object[] params = {alue.getAlueviestimaara(), alue.getViimeisinAika(), alue.getId()};
         update(updateQuery, params);
     }
-    
-    
+
+    @Override
+    public void insertNewInstance(Alue alue) throws SQLException {
+        String updateQuery = "INSERT INTO Alue (aluenimi, alueviestimaara, viimeisin_aika) VALUES (?, ?, ?)";
+        Object[] params = {alue.getAluenimi(), alue.getAlueviestimaara(), alue.getViimeisinAika()};
+        update(updateQuery, params);
+    }
+
+    @Override
+    public void updateInstance(Alue alue) throws SQLException {
+        String updateQuery = "UPDATE Alue SET alueviestimaara = ?, viimeisin_aika = ? WHERE id = ?";
+        Object[] params = {alue.getAlueviestimaara(), alue.getViimeisinAika(), alue.getId()};
+        update(updateQuery, params);
+    }
 
 }

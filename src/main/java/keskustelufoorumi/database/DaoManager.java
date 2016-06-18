@@ -44,37 +44,41 @@ public class DaoManager {
 
         return this.connection;
     }
+    
+    public void closeConnection() throws SQLException {
+        this.connection.close();
+    }
 
     /*
     DAO FACTORY
      */
-    public KayttajaDao getKayttajaDao() {
+    public KayttajaDao getKayttajaDao() throws SQLException {
         if (this.kayttajaDao == null) {
-            this.kayttajaDao = new KayttajaDao(this.connection);
+            this.kayttajaDao = new KayttajaDao(getConnection());
         }
 
         return this.kayttajaDao;
     }
 
-    public AlueDao getAlueDao() {
+    public AlueDao getAlueDao() throws SQLException {
         if (this.alueDao == null) {
-            this.alueDao = new AlueDao(this.connection);
+            this.alueDao = new AlueDao(getConnection());
         }
 
         return this.alueDao;
     }
 
-    public LankaDao getLankaDao() {
+    public LankaDao getLankaDao() throws SQLException {
         if (this.lankaDao == null) {
-            this.lankaDao = new LankaDao(this.connection, getAlueDao());
+            this.lankaDao = new LankaDao(getConnection(), getAlueDao());
         }
 
         return this.lankaDao;
     }
 
-    public ViestiDao getViestiDao() {
+    public ViestiDao getViestiDao() throws SQLException {
         if (this.viestiDao == null) {
-            this.viestiDao = new ViestiDao(this.connection, getKayttajaDao(), getLankaDao());
+            this.viestiDao = new ViestiDao(getConnection(), getKayttajaDao(), getLankaDao());
         }
 
         return this.viestiDao;

@@ -1,4 +1,5 @@
 package keskustelufoorumi.database;
+
 import java.util.*;
 import java.sql.*;
 import keskustelufoorumi.domain.Lanka;
@@ -30,7 +31,7 @@ public class LankaDao implements Dao<Lanka, Integer> {
         }
         int id = rs.getInt("id");
         String lankanimi = rs.getString("lankanimi");
-        int alueId = rs.getInt("alue_id");        
+        int alueId = rs.getInt("alue_id");
         int lankaviestimaara = rs.getInt("lankaviestimaara");
         Timestamp viimeisinAika = rs.getTimestamp("viimeisin_aika");
         Lanka l = new Lanka(id, lankanimi, alueDao.findOne(alueId), lankaviestimaara, viimeisinAika);
@@ -56,7 +57,7 @@ public class LankaDao implements Dao<Lanka, Integer> {
             int id = rs.getInt("id");
             String lankanimi = rs.getString("lankanimi");
             int lankaviestimaara = rs.getInt("lankaviestimaara");
-            int alueId = rs.getInt("alue_id");            
+            int alueId = rs.getInt("alue_id");
             Timestamp viimeisinAika = rs.getTimestamp("viimeisin_aika");
             langat.add(new Lanka(id, lankanimi, alueDao.findOne(alueId), lankaviestimaara, viimeisinAika));
         }
@@ -80,7 +81,6 @@ public class LankaDao implements Dao<Lanka, Integer> {
         }
 
 //        Connection connection = database.getConnection();
-
         String query = "SELECT * FROM Lanka WHERE id IN (" + muuttujat + ")";
         PreparedStatement stmt = connection.prepareStatement(query);
 
@@ -91,7 +91,7 @@ public class LankaDao implements Dao<Lanka, Integer> {
             int id = rs.getInt("id");
             String lankanimi = rs.getString("lankanimi");
             int lankaviestimaara = rs.getInt("lankaviestimaara");
-            int alueId = rs.getInt("alue_id");            
+            int alueId = rs.getInt("alue_id");
             Timestamp viimeisinAika = rs.getTimestamp("viimeisin_aika");
             langat.add(new Lanka(id, lankanimi, alueDao.findOne(alueId), lankaviestimaara, viimeisinAika));
         }
@@ -136,16 +136,30 @@ public class LankaDao implements Dao<Lanka, Integer> {
         stmt.close();
 //        connection.close();
     }
-    
+
     public void insertNewLanka(Lanka lanka) throws SQLException {
         String updateQuery = "INSERT INTO Lanka (lankanimi, alue_id, lankaviestimaara, viimeisin_aika) VALUES (?, ?, ?, ?)";
         Object[] params = {lanka.getLankanimi(), lanka.getAlue().getId(), lanka.getLankaviestimaara(), lanka.getViimeisinAika()};
         update(updateQuery, params);
     }
-    
+
     public void updateLanka(Lanka lanka) throws SQLException {
         String updateQuery = "UPDATE Lanka SET lankaviestimaara = ?, viimeisin_aika = ? WHERE id = ?";
-        Object[] params = {lanka.getLankaviestimaara(),lanka.getViimeisinAika(), lanka.getId()};
+        Object[] params = {lanka.getLankaviestimaara(), lanka.getViimeisinAika(), lanka.getId()};
+        update(updateQuery, params);
+    }
+
+    @Override
+    public void insertNewInstance(Lanka lanka) throws SQLException {
+        String updateQuery = "INSERT INTO Lanka (lankanimi, alue_id, lankaviestimaara, viimeisin_aika) VALUES (?, ?, ?, ?)";
+        Object[] params = {lanka.getLankanimi(), lanka.getAlue().getId(), lanka.getLankaviestimaara(), lanka.getViimeisinAika()};
+        update(updateQuery, params);
+    }
+
+    @Override
+    public void updateInstance(Lanka lanka) throws SQLException {
+        String updateQuery = "UPDATE Lanka SET lankaviestimaara = ?, viimeisin_aika = ? WHERE id = ?";
+        Object[] params = {lanka.getLankaviestimaara(), lanka.getViimeisinAika(), lanka.getId()};
         update(updateQuery, params);
     }
 

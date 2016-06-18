@@ -87,7 +87,6 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         }
 
 //        Connection connection = database.getConnection();
-
         String query = "SELECT * FROM Viesti WHERE id IN (" + muuttujat + ")";
         PreparedStatement stmt = connection.prepareStatement(query);
 
@@ -144,11 +143,23 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         stmt.close();
 //        connection.close();
     }
-    
+
     public void insertNewViesti(Viesti viesti) throws SQLException {
         String updateQuery = "INSERT INTO Viesti (sisalto, kayttaja_id, lanka_id, lahetysaika) VALUES (?, ?, ?, ?)";
         Object[] params = {viesti.getSisalto(), viesti.getKayttaja().getId(), viesti.getLanka().getId(), viesti.getLahetysaika()};
         update(updateQuery, params);
+    }
+
+    @Override
+    public void insertNewInstance(Viesti viesti) throws SQLException {
+        String updateQuery = "INSERT INTO Viesti (sisalto, kayttaja_id, lanka_id, lahetysaika) VALUES (?, ?, ?, ?)";
+        Object[] params = {viesti.getSisalto(), viesti.getKayttaja().getId(), viesti.getLanka().getId(), viesti.getLahetysaika()};
+        update(updateQuery, params);
+    }
+
+    @Override
+    public void updateInstance(Viesti viesti) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
