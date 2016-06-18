@@ -20,6 +20,12 @@ public class Lanka {
         this.lankaviestimaara = lankaviestimaara;
         this.viimeisinAika = viimeisinAika;
     }
+    
+    public Lanka(String lankanimi, Alue alue) {
+        this.lankanimi = lankanimi;
+        this.alue = alue;
+        this.lankaviestimaara = 0;                
+    }
 
     /* 
     GETTERIT
@@ -45,8 +51,13 @@ public class Lanka {
     }
     
     /*
-    SETTERIT
+    *SETTERIT
     */
+    
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public void setViimeisinAika(Timestamp viimeisinAika) {
         this.viimeisinAika = viimeisinAika;
     }

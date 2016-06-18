@@ -1,6 +1,6 @@
 package keskustelufoorumi.database.generic;
 
-public interface DaoCommand<T> {
+public interface DaoCommandBS<T> {
     
     public T execute(DaoManagerBS manager);
     

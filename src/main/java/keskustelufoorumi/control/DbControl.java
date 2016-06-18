@@ -12,13 +12,13 @@ public class DbControl {
     }
     
     
-    public void jotain() throws SQLException {
-        DaoManager dm = new DaoManager();
-        KayttajaDao kd = dm.getKayttajaDao();
-        dm.closeConnection();
-        
-        
-    }
+//    public void jotain() throws SQLException {
+//        DaoManager dm = new DaoManager();
+//        KayttajaDao kd = dm.getKayttajaDao();
+//        dm.closeConnection();
+//        
+//        
+//    }
     
     
 }

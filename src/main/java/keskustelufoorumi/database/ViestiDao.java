@@ -7,21 +7,19 @@ import keskustelufoorumi.domain.Viesti;
 
 public class ViestiDao implements Dao<Viesti, Integer> {
 
-//    private Database database;
-    private Connection connection;
+    private Database database;
     private KayttajaDao kayttajaDao;
     private LankaDao lankaDao;
 
-    public ViestiDao(Connection connection, KayttajaDao kayttajaDao, LankaDao lankaDao) {
-//        this.database = database;
-        this.connection = connection;
+    public ViestiDao(Database database, KayttajaDao kayttajaDao, LankaDao lankaDao) {
+        this.database = database;        
         this.kayttajaDao = kayttajaDao;
         this.lankaDao = lankaDao;
     }
 
     @Override
     public Viesti findOne(Integer key) throws SQLException {
-//        Connection connection = database.getConnection();
+        Connection connection = database.getConnection();
 
         String query = "SELECT * FROM Viesti WHERE id = ?";
         PreparedStatement stmt = connection.prepareStatement(query);
@@ -43,14 +41,14 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
         rs.close();
         stmt.close();
-//        connection.close();
+        connection.close();
 
         return v;
     }
 
     @Override
     public List<Viesti> findAll() throws SQLException {
-//        Connection connection = database.getConnection();
+        Connection connection = database.getConnection();
 
         String query = "SELECT * FROM Viesti";
         PreparedStatement stmt = connection.prepareStatement(query);
@@ -70,7 +68,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
         rs.close();
         stmt.close();
-//        connection.close();
+        connection.close();
 
         return viestit;
     }
@@ -86,7 +84,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
             muuttujat.append(", ?");
         }
 
-//        Connection connection = database.getConnection();
+        Connection connection = database.getConnection();
         String query = "SELECT * FROM Viesti WHERE id IN (" + muuttujat + ")";
         PreparedStatement stmt = connection.prepareStatement(query);
 
@@ -105,7 +103,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
         rs.close();
         stmt.close();
-//        connection.close();
+        connection.close();
 
         return viestit;
     }
@@ -117,7 +115,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
     @Override
     public void delete(Integer key) throws SQLException {
-//        Connection connection = database.getConnection();
+        Connection connection = database.getConnection();
 
         String query = "DELETE FROM Viesti WHERE id = ?";
         PreparedStatement stmt = connection.prepareStatement(query);
@@ -126,12 +124,12 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         stmt.executeUpdate();
 
         stmt.close();
-//        connection.close();
+        connection.close();
     }
 
     @Override
     public void update(String updateQuery, Object... params) throws SQLException {
-//        Connection connection = database.getConnection();
+        Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(updateQuery);
 
         for (int i = 0; i < params.length; i++) {
@@ -141,7 +139,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         stmt.executeUpdate();
 
         stmt.close();
-//        connection.close();
+        connection.close();
     }
 
     public void insertNewViesti(Viesti viesti) throws SQLException {

@@ -14,22 +14,23 @@ import keskustelufoorumi.domain.Alue;
 import keskustelufoorumi.domain.Kayttaja;
 import keskustelufoorumi.domain.Lanka;
 import keskustelufoorumi.domain.Viesti;
+import keskustelufoorumi.ui.TekstiUi;
 //import keskustelufoorumi.ui.TekstiUi;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        Kayttaja kayttaja = new Kayttaja("KumiJ");
-        Alue alue = new Alue(1, "Yleinen keskustelu", 0, null);
-        Lanka lanka = new Lanka(1, "Timantit on ikuisia", alue, 0, null);
-        Date date = new Date();
-        Viesti viesti = new Viesti(1, "tadaa-tadaa", kayttaja, lanka, new Timestamp(date.getTime()));
-        
-        lanka.lisaaViesti(viesti);
-        alue.lisaaViesti(viesti);
-        
-        DaoManager dm = new DaoManager();
-        dm.teePaivitys(viesti);
+//        Kayttaja kayttaja = new Kayttaja("KumiJ");
+//        Alue alue = new Alue(1, "Yleinen keskustelu", 0, null);
+//        Lanka lanka = new Lanka(1, "Timantit on ikuisia", alue, 0, null);
+//        Date date = new Date();
+//        Viesti viesti = new Viesti(1, "tadaa-tadaa", kayttaja, lanka, new Timestamp(date.getTime()));
+//        
+//        lanka.lisaaViesti(viesti);
+//        alue.lisaaViesti(viesti);
+//        
+//        DaoManager dm = new DaoManager();
+//        dm.teePaivitys(viesti);
         
         
         
@@ -56,9 +57,21 @@ public class Main {
 //        tulostaAlueet(alueDao);
 //        tulostaLangat(lankaDao);
 //        tulostaViesti(viestiDao);
-
-        //TekstiUi tekstiUi = new TekstiUi(lukija, database, alueDao, lankaDao, viestiDao, kayttajaDao);
-        //tekstiUi.kaynnista();
+        Database database = new Database();
+        DaoManager daoManager = new DaoManager(database);
+        
+//        AlueDao aluedao = daoManager.getAlueDao();
+//        List<Alue> alueet = aluedao.findAll();
+//        System.out.println(alueet);
+//        
+//        LankaDao lankadao = daoManager.getLankaDao();
+//        List<Lanka> langat = lankadao.findAll();
+//        System.out.println(langat);
+//        
+        
+        Scanner lukija = new Scanner(System.in);
+        TekstiUi tekstiUi = new TekstiUi(lukija, daoManager);
+        tekstiUi.kaynnista();
     }
 
     public static void tulostaKayttajat(KayttajaDao kayttajaDao) throws SQLException {
@@ -89,7 +102,7 @@ public class Main {
         System.out.println("Viestit:");
         for (Viesti viesti : viestiDao.findAll()) {
             if (viesti.getLanka().getLankanimi().equals("UCL finaali")) {
-                System.out.println(viesti.getViestitunnus()
+                System.out.println(viesti.getId()
                         + " | " + viesti.getLanka().getLankanimi()
                         + " | " + viesti.getKayttaja().getId()
                         + " | " + viesti.getSisalto()

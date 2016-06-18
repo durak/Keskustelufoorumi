@@ -10,8 +10,26 @@ public class Viesti {
     private Lanka lanka;
     private Timestamp lahetysaika;
     
+    
+    public Viesti() {
+        
+    }
+    
+    /*
+    * Konstruktori tietokannasta luettavaa viestiä varten
+    */
     public Viesti(int id, String sisalto, Kayttaja kayttaja, Lanka lanka, Timestamp lahetysaika) {
         this.id = id;
+        this.sisalto = sisalto;
+        this.kayttaja = kayttaja;
+        this.lanka = lanka;
+        this.lahetysaika = lahetysaika;
+    }
+    
+    /*
+    * Konstruktori uuden viestin luomista varten, tietokannanhallintajärjestelmä asettaa id-numeron
+    */
+    public Viesti(String sisalto, Kayttaja kayttaja, Lanka lanka, Timestamp lahetysaika) {
         this.sisalto = sisalto;
         this.kayttaja = kayttaja;
         this.lanka = lanka;
@@ -21,7 +39,7 @@ public class Viesti {
     
     // GETTERIT
     
-    public int getViestitunnus() {
+    public int getId() {
         return id;
     }
     
@@ -43,8 +61,8 @@ public class Viesti {
     
     // SETTERIT
     
-    public void setViestitunnus(int viestitunnus) {
-        this.id = viestitunnus;                
+    public void setId(int id) {
+        this.id = id;                
     }
     
     public void setSisalto(String sisalto) {

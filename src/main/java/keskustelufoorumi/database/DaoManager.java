@@ -20,8 +20,9 @@ public class DaoManager {
     protected ViestiDao viestiDao = null;
     protected KayttajaDao kayttajaDao = null;
 
-    public DaoManager() {
+    public DaoManager(Database database) {
         this.databaseAddress = "jdbc:sqlite:forum.db";
+        this.database = database;
     }
 
     /*
@@ -29,7 +30,7 @@ public class DaoManager {
      */
     private Connection getConnection() throws SQLException {
         if (this.connection == null) {
-            this.connection = DriverManager.getConnection(databaseAddress);
+            this.connection = database.getConnection();
         }
         
         return this.connection;
@@ -54,7 +55,7 @@ public class DaoManager {
      */
     public KayttajaDao getKayttajaDao() throws SQLException {
         if (this.kayttajaDao == null) {
-            this.kayttajaDao = new KayttajaDao(getConnection());
+            this.kayttajaDao = new KayttajaDao(this.database);
         }
 
         return this.kayttajaDao;
@@ -62,7 +63,7 @@ public class DaoManager {
 
     public AlueDao getAlueDao() throws SQLException {
         if (this.alueDao == null) {
-            this.alueDao = new AlueDao(getConnection());
+            this.alueDao = new AlueDao(this.database);
         }
 
         return this.alueDao;
@@ -70,7 +71,7 @@ public class DaoManager {
 
     public LankaDao getLankaDao() throws SQLException {
         if (this.lankaDao == null) {
-            this.lankaDao = new LankaDao(getConnection(), getAlueDao());
+            this.lankaDao = new LankaDao(this.database, getAlueDao());
         }
 
         return this.lankaDao;
@@ -78,7 +79,7 @@ public class DaoManager {
 
     public ViestiDao getViestiDao() throws SQLException {
         if (this.viestiDao == null) {
-            this.viestiDao = new ViestiDao(getConnection(), getKayttajaDao(), getLankaDao());
+            this.viestiDao = new ViestiDao(this.database, getKayttajaDao(), getLankaDao());
         }
 
         return this.viestiDao;

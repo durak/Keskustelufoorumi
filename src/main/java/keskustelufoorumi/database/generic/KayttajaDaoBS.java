@@ -6,11 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import keskustelufoorumi.domain.Kayttaja;
 
-public class KayttajaDao2 extends GenericDao<Kayttaja> {
+public class KayttajaDaoBS extends GenericDaoBS<Kayttaja> {
 
     private final static String TABLENAME = "Kayttaja";
 
-    public KayttajaDao2(Connection connection) {
+    public KayttajaDaoBS(Connection connection) {
         super(connection, TABLENAME);
     }
 

@@ -4,12 +4,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class Database {
+public class DatabaseBS {
     
     private final String databaseAddress;
     private Connection connection;
     
-    public Database() throws Exception {
+    public DatabaseBS() throws Exception {
         this.databaseAddress = "jdbc:sqlite:forum.db";
         
     }

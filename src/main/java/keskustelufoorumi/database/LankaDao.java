@@ -6,19 +6,39 @@ import keskustelufoorumi.domain.Lanka;
 
 public class LankaDao implements Dao<Lanka, Integer> {
 
-//    private Database database;
-    private Connection connection;
+    private Database database;
     private AlueDao alueDao;
 
-    public LankaDao(Connection connection, AlueDao alueDao) {
-//        this.database = database;
-        this.connection = connection;
+    public LankaDao(Database database, AlueDao alueDao) {
+        this.database = database;
         this.alueDao = alueDao;
+    }
+
+    public int getMaxId() throws SQLException {
+        Connection connection = database.getConnection();
+        String query = "SELECT max(id) FROM Lanka";
+
+        PreparedStatement stmt = connection.prepareStatement(query);
+
+        ResultSet rs = stmt.executeQuery();
+
+        boolean hasOne = rs.next();
+        if (!hasOne) {
+            return -1;
+        }
+
+        int maxId = rs.getInt("max(id)");
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return maxId;
     }
 
     @Override
     public Lanka findOne(Integer key) throws SQLException {
-//        Connection connection = database.getConnection();
+        Connection connection = database.getConnection();
 
         String query = "SELECT * FROM Lanka WHERE id = ?";
         PreparedStatement stmt = connection.prepareStatement(query);
@@ -38,14 +58,14 @@ public class LankaDao implements Dao<Lanka, Integer> {
 
         rs.close();
         stmt.close();
-//        connection.close();
+        connection.close();
 
         return l;
     }
 
     @Override
     public List<Lanka> findAll() throws SQLException {
-//        Connection connection = database.getConnection();
+        Connection connection = database.getConnection();
 
         String query = "SELECT * FROM Lanka";
         PreparedStatement stmt = connection.prepareStatement(query);
@@ -64,7 +84,7 @@ public class LankaDao implements Dao<Lanka, Integer> {
 
         rs.close();
         stmt.close();
-//        connection.close();
+        connection.close();
 
         return langat;
     }
@@ -80,7 +100,7 @@ public class LankaDao implements Dao<Lanka, Integer> {
             muuttujat.append(", ?");
         }
 
-//        Connection connection = database.getConnection();
+        Connection connection = database.getConnection();
         String query = "SELECT * FROM Lanka WHERE id IN (" + muuttujat + ")";
         PreparedStatement stmt = connection.prepareStatement(query);
 
@@ -98,7 +118,7 @@ public class LankaDao implements Dao<Lanka, Integer> {
 
         rs.close();
         stmt.close();
-//        connection.close();
+        connection.close();
 
         return langat;
     }
@@ -110,7 +130,7 @@ public class LankaDao implements Dao<Lanka, Integer> {
 
     @Override
     public void delete(Integer key) throws SQLException {
-//        Connection connection = database.getConnection();
+        Connection connection = database.getConnection();
 
         String query = "DELETE FROM Lanka WHERE id = ?";
         PreparedStatement stmt = connection.prepareStatement(query);
@@ -119,12 +139,12 @@ public class LankaDao implements Dao<Lanka, Integer> {
         stmt.executeUpdate();
 
         stmt.close();
-//        connection.close();
+        connection.close();
     }
 
     @Override
     public void update(String updateQuery, Object... params) throws SQLException {
-//        Connection connection = database.getConnection();
+        Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(updateQuery);
 
         for (int i = 0; i < params.length; i++) {
@@ -134,7 +154,7 @@ public class LankaDao implements Dao<Lanka, Integer> {
         stmt.executeUpdate();
 
         stmt.close();
-//        connection.close();
+        connection.close();
     }
 
     public void insertNewLanka(Lanka lanka) throws SQLException {

@@ -13,7 +13,7 @@ public class DaoManagerBS {
 
     protected String databaseAddress = null;
     protected Connection connection = null;
-    protected KayttajaDao2 kayttajaDao = null;
+    protected KayttajaDaoBS kayttajaDao = null;
     protected AlueDao alueDao = null;
     protected LankaDao lankaDao = null;
     protected ViestiDao viestiDao = null;
@@ -23,9 +23,9 @@ public class DaoManagerBS {
 
     }
 
-    public KayttajaDao2 kayttajaDao() {
+    public KayttajaDaoBS kayttajaDao() {
         if (this.kayttajaDao == null) {
-            this.kayttajaDao = new KayttajaDao2(this.connection);
+            this.kayttajaDao = new KayttajaDaoBS(this.connection);
         }
 
         return this.kayttajaDao;
@@ -44,7 +44,7 @@ public class DaoManagerBS {
         return this.connection;
     }
 
-    public Object transaction(DaoCommand command) throws SQLException {
+    public Object transaction(DaoCommandBS command) throws SQLException {
         try {
             Object returnValue = command.execute(this);
             getConnection().commit();
@@ -57,7 +57,7 @@ public class DaoManagerBS {
         }
     }
 
-    public Object executeAndClose(DaoCommand command) throws SQLException {
+    public Object executeAndClose(DaoCommandBS command) throws SQLException {
         try {
             return command.execute(this);
         } finally {

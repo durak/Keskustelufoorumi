@@ -6,17 +6,38 @@ import keskustelufoorumi.domain.Alue;
 
 public class AlueDao implements Dao<Alue, Integer> {
 
-//    private Database database;
-    private Connection connection;
+    private Database database;
 
-    public AlueDao(Connection connection) {
-//        this.database = database;
-        this.connection = connection;
+    public AlueDao(Database database) {
+        this.database = database;
+
+    }
+
+    public int getMaxId() throws SQLException {
+        Connection connection = database.getConnection();
+        String query = "SELECT max(id) FROM Alue";
+
+        PreparedStatement stmt = connection.prepareStatement(query);
+
+        ResultSet rs = stmt.executeQuery();
+                
+        boolean hasOne = rs.next();
+        if (!hasOne) {
+            return -1;
+        }
+        
+        int maxId = rs.getInt("max(id)");
+        
+        rs.close();
+        stmt.close();
+        connection.close();
+        
+        return maxId;
     }
 
     @Override
     public Alue findOne(Integer key) throws SQLException {
-//        Connection connection = database.getConnection();
+        Connection connection = database.getConnection();
 
         String query = "SELECT * FROM Alue WHERE id = ?";
         PreparedStatement stmt = connection.prepareStatement(query);
@@ -36,14 +57,14 @@ public class AlueDao implements Dao<Alue, Integer> {
 
         rs.close();
         stmt.close();
-//        connection.close();
+        connection.close();
 
         return a;
     }
 
     @Override
     public List<Alue> findAll() throws SQLException {
-//        Connection connection = database.getConnection();
+        Connection connection = database.getConnection();
 
         String query = "SELECT * FROM Alue";
         PreparedStatement stmt = connection.prepareStatement(query);
@@ -61,7 +82,7 @@ public class AlueDao implements Dao<Alue, Integer> {
 
         rs.close();
         stmt.close();
-//        connection.close();
+        connection.close();
 
         return alueet;
     }
@@ -77,7 +98,7 @@ public class AlueDao implements Dao<Alue, Integer> {
             muuttujat.append(", ?");
         }
 
-//        Connection connection = database.getConnection();
+        Connection connection = database.getConnection();
         String query = "SELECT * FROM Alue WHERE id IN (" + muuttujat + ")";
         PreparedStatement stmt = connection.prepareStatement(query);
 
@@ -100,7 +121,7 @@ public class AlueDao implements Dao<Alue, Integer> {
 
         rs.close();
         stmt.close();
-//        connection.close();
+        connection.close();
 
         return alueet;
     }
@@ -112,7 +133,7 @@ public class AlueDao implements Dao<Alue, Integer> {
 
     @Override
     public void delete(Integer key) throws SQLException {
-//        Connection connection = database.getConnection();
+        Connection connection = database.getConnection();
 
         String query = "DELETE FROM Alue WHERE aluenimi = ?";
         PreparedStatement stmt = connection.prepareStatement(query);
@@ -121,12 +142,12 @@ public class AlueDao implements Dao<Alue, Integer> {
         stmt.executeUpdate();
 
         stmt.close();
-//        connection.close();
+        connection.close();
     }
 
     @Override
     public void update(String updateQuery, Object... params) throws SQLException {
-//        Connection connection = database.getConnection();
+        Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(updateQuery);
 
         for (int i = 0; i < params.length; i++) {
@@ -136,7 +157,7 @@ public class AlueDao implements Dao<Alue, Integer> {
         stmt.executeUpdate();
 
         stmt.close();
-//        connection.close();
+        connection.close();
     }
 
     public void insertNewAlue(Alue alue) throws SQLException {
