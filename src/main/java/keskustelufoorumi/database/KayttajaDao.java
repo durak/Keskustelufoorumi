@@ -114,7 +114,7 @@ public class KayttajaDao implements Dao<Kayttaja, String> {
         connection.close();
     }
 
-    @Override
+    
     public List<Kayttaja> findAllWhereXIsK(String x, String key) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

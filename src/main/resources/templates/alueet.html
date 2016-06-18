@@ -1,0 +1,24 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    
+    <head>
+        <title>Keskustelupalsta</title>
+        <meta charset="UTF-8" />        
+    </head>
+
+    <body>
+        <h1>Keskustelupalsta</h1>
+        <h2> Alueet</h2>
+        
+        <ul>            
+            <li th:each="alue: ${alueet}">
+                <span th:text="${alue.aluenimi}"></span>
+                <a th:href="${'/alueet/' + alue.id}">linkki</a>
+                <span th:text="${alue.alueviestimaara}"></span>
+                <span th:text="${alue.viimeisinAika}"></span>        
+                
+            </li>
+        </ul>
+
+    </body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Lankanäkymä</title>
+        <meta charset="utf-8" />
+    </head>
+
+    <body>
+        <h1><span th:text="${aluenimi}"></span></h1>
+        <ul>            
+            <li th:each="lanka: ${langat}">
+                <span th:text="${lanka.lankanimi}"></span>                
+                <span th:text="${lanka.lankaviestimaara}"></span>
+                <span th:text="${lanka.viimeisinAika}"></span>        
+
+            </li>
+        </ul>
+        
+    </body>
+</html>

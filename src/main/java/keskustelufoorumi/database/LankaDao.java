@@ -123,9 +123,30 @@ public class LankaDao implements Dao<Lanka, Integer> {
         return langat;
     }
 
-    @Override
-    public List<Lanka> findAllWhereXIsK(String x, Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+    public List<Lanka> findAllWhereXIsK(Integer key) throws SQLException {
+        Connection connection = database.getConnection();
+        String query = "SELECT * FROM Lanka WHERE alue_id = ?";
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setObject(1, key);
+        
+        ResultSet rs = stmt.executeQuery();
+        List<Lanka> langat = new ArrayList<>();
+
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            String lankanimi = rs.getString("lankanimi");
+            int lankaviestimaara = rs.getInt("lankaviestimaara");
+            int alueId = rs.getInt("alue_id");
+            Timestamp viimeisinAika = rs.getTimestamp("viimeisin_aika");
+            langat.add(new Lanka(id, lankanimi, alueDao.findOne(alueId), lankaviestimaara, viimeisinAika));
+        }
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return langat;
     }
 
     @Override

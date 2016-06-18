@@ -21,7 +21,7 @@ public interface Dao<T, K> {
     List<T> findAllIn(Collection<K> keys) throws SQLException;
 
     
-    List<T> findAllWhereXIsK(String x, K key) throws SQLException;
+//    List<T> findAllWhereXIsK(String x, K key) throws SQLException;
 
     /*
       Poista käsitteen T ilmentymä K

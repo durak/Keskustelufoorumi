@@ -108,7 +108,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         return viestit;
     }
 
-    @Override
+    
     public List<Viesti> findAllWhereXIsK(String x, Integer key) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
