@@ -7,15 +7,24 @@
     </head>
 
     <body>
-        <h1><span th:text="${aluenimi}"></span></h1>
+        <h1><span th:text="${alue.aluenimi}"></span></h1>
         <ul>            
             <li th:each="lanka: ${langat}">
-                <span th:text="${lanka.lankanimi}"></span>                
+                <a th:href="${'/alue/' + lanka.alue.id + '/' + lanka.id}">
+                    <span th:text="${lanka.lankanimi}"></span>
+                </a>
                 <span th:text="${lanka.lankaviestimaara}"></span>
                 <span th:text="${lanka.viimeisinAika}"></span>        
 
             </li>
         </ul>
-        
+
+        <h2> Luo uusi lanka </h2>
+        <form method="POST">                        
+            Langan nimi:<br/>
+            <input type="text" name="lankanimi"/><br/>
+            <input type="submit" value="Luo"/>
+        </form>
+
     </body>
 </html>

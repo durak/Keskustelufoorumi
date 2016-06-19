@@ -1,5 +1,6 @@
 package keskustelufoorumi.domain;
 import java.util.*;
+import java.util.Date;
 import java.sql.*;
 
 public class Viesti {
@@ -16,8 +17,8 @@ public class Viesti {
     }
     
     /*
-    * Konstruktori tietokannasta luettavaa viestiä varten
-    */
+     * Konstruktori tietokannasta luettavaa viestiä varten
+     */
     public Viesti(int id, String sisalto, Kayttaja kayttaja, Lanka lanka, Timestamp lahetysaika) {
         this.id = id;
         this.sisalto = sisalto;
@@ -27,8 +28,8 @@ public class Viesti {
     }
     
     /*
-    * Konstruktori uuden viestin luomista varten, tietokannanhallintajärjestelmä asettaa id-numeron
-    */
+     * Konstruktori uuden viestin luomista varten, tietokannanhallintajärjestelmä asettaa id-numeron
+     */
     public Viesti(String sisalto, Kayttaja kayttaja, Lanka lanka, Timestamp lahetysaika) {
         this.sisalto = sisalto;
         this.kayttaja = kayttaja;
@@ -36,6 +37,15 @@ public class Viesti {
         this.lahetysaika = lahetysaika;
     }
     
+   /*
+    * Konstruktori, jossa automaattinene timestamp
+    */
+    public Viesti(String sisalto, Kayttaja kayttaja, Lanka lanka) {
+        this.sisalto = sisalto;
+        this.kayttaja = kayttaja;
+        this.lanka = lanka;
+        this.lahetysaika = new Timestamp(new Date().getTime());
+    }
     
     // GETTERIT
     

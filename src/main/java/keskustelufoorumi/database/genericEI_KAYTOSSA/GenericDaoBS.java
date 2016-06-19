@@ -1,5 +1,5 @@
 
-package keskustelufoorumi.database.generic;
+package keskustelufoorumi.database.genericEI_KAYTOSSA;
 
 import java.sql.Connection;
 import java.sql.SQLException;

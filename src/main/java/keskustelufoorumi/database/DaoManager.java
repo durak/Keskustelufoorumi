@@ -88,51 +88,51 @@ public class DaoManager {
     /*
     Multi-Dao transaktiot
      */
-    public void teePaivitys(Viesti viesti) throws SQLException {
+//    public void teePaivitys(Viesti viesti) throws SQLException {
+//
+//        try {
+//
+//            getConnection().setAutoCommit(false);
+//
+//            Kayttaja kayttaja = viesti.getKayttaja();
+//            Lanka lanka = viesti.getLanka();
+//            Alue alue = lanka.getAlue();
+//
+//            // uusi käyttäjä
+//            if (getKayttajaDao().findOne(kayttaja.getId()) == null) {
+//                getKayttajaDao().insertNewKayttaja(kayttaja);
+//            }
+//
+//            // uusi alue / paivitys
+//            if (getAlueDao().findOne(alue.getId()) == null) {
+//                getAlueDao().insertNewAlue(alue);
+//            } else {
+//                getAlueDao().updateAlue(alue);
+//            }
+//            
+//            // uusi lanka / päivitys
+//            if (getLankaDao().findOne(lanka.getId()) == null) {
+//                getLankaDao().insertNewLanka(lanka);
+//            } else {
+//                getLankaDao().updateLanka(lanka);
+//            }
+//
+//            getViestiDao().insertNewViesti(viesti);
+//
+//            this.connection.commit();
+//
+//        } catch (Exception e) {
+//            if (this.connection != null) {
+//                this.connection.rollback();
+//            }
+//        } finally {
+//            if (this.connection != null) {
+//                this.connection.setAutoCommit(true);
+//                this.connection.close();
+//
+//            }
+//
+//        }
 
-        try {
-
-            getConnection().setAutoCommit(false);
-
-            Kayttaja kayttaja = viesti.getKayttaja();
-            Lanka lanka = viesti.getLanka();
-            Alue alue = lanka.getAlue();
-
-            // uusi käyttäjä
-            if (getKayttajaDao().findOne(kayttaja.getId()) == null) {
-                getKayttajaDao().insertNewKayttaja(kayttaja);
-            }
-
-            // uusi alue / paivitys
-            if (getAlueDao().findOne(alue.getId()) == null) {
-                getAlueDao().insertNewAlue(alue);
-            } else {
-                getAlueDao().updateAlue(alue);
-            }
-            
-            // uusi lanka / päivitys
-            if (getLankaDao().findOne(lanka.getId()) == null) {
-                getLankaDao().insertNewLanka(lanka);
-            } else {
-                getLankaDao().updateLanka(lanka);
-            }
-
-            getViestiDao().insertNewViesti(viesti);
-
-            this.connection.commit();
-
-        } catch (Exception e) {
-            if (this.connection != null) {
-                this.connection.rollback();
-            }
-        } finally {
-            if (this.connection != null) {
-                this.connection.setAutoCommit(true);
-                this.connection.close();
-
-            }
-
-        }
-
-    }
+//    }
 }

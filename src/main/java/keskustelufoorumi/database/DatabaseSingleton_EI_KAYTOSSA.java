@@ -4,16 +4,16 @@ import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class DatabaseSingleton {
+public class DatabaseSingleton_EI_KAYTOSSA {
 
     private String databaseAddress = "jdbc:sqlite:forum.db";
-    private static DatabaseSingleton instance = new DatabaseSingleton();
+    private static DatabaseSingleton_EI_KAYTOSSA instance = new DatabaseSingleton_EI_KAYTOSSA();
     private Connection connection;
 
-    private DatabaseSingleton() {
+    private DatabaseSingleton_EI_KAYTOSSA() {
     }
 
-    public static DatabaseSingleton getInstance() {
+    public static DatabaseSingleton_EI_KAYTOSSA getInstance() {
         return instance;
     }
 

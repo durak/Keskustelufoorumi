@@ -18,7 +18,8 @@ public class Alue {
 
     public Alue(String aluenimi) {        
         this.aluenimi = aluenimi;
-        this.alueviestimaara = 0;      
+        this.alueviestimaara = 0;        
+        this.viimeisinAika = new Timestamp(0);
         
     }
 

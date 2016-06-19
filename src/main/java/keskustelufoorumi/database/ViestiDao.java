@@ -12,9 +12,31 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     private LankaDao lankaDao;
 
     public ViestiDao(Database database, KayttajaDao kayttajaDao, LankaDao lankaDao) {
-        this.database = database;        
+        this.database = database;
         this.kayttajaDao = kayttajaDao;
         this.lankaDao = lankaDao;
+    }
+
+    public int getMaxId() throws SQLException {
+        Connection connection = database.getConnection();
+        String query = "SELECT max(id) FROM Viesti";
+
+        PreparedStatement stmt = connection.prepareStatement(query);
+
+        ResultSet rs = stmt.executeQuery();
+
+        boolean hasOne = rs.next();
+        if (!hasOne) {
+            return -1;
+        }
+
+        int maxId = rs.getInt("max(id)");
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return maxId;
     }
 
     @Override
@@ -108,9 +130,31 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         return viestit;
     }
 
-    
-    public List<Viesti> findAllWhereXIsK(String x, Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Viesti> findAllWhereXIsK(Integer key) throws SQLException {
+
+        Connection connection = database.getConnection();
+        String query = "SELECT * FROM Viesti WHERE lanka_id = ?";
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setObject(1, key);
+
+        ResultSet rs = stmt.executeQuery();
+        List<Viesti> viestit = new ArrayList<>();
+
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            String sisalto = rs.getString("sisalto");
+            String kayttajaId = rs.getString("kayttaja_id");
+            int lankaId = rs.getInt("lanka_id");
+            Timestamp lahetysaika = rs.getTimestamp("lahetysaika");
+
+            viestit.add(new Viesti(id, sisalto, kayttajaDao.findOne(kayttajaId), lankaDao.findOne(lankaId), lahetysaika));
+        }
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return viestit;
     }
 
     @Override

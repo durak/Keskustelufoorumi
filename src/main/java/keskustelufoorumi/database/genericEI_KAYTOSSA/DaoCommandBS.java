@@ -1,4 +1,4 @@
-package keskustelufoorumi.database.generic;
+package keskustelufoorumi.database.genericEI_KAYTOSSA;
 
 public interface DaoCommandBS<T> {
     

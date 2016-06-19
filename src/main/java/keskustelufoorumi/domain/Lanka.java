@@ -24,7 +24,8 @@ public class Lanka {
     public Lanka(String lankanimi, Alue alue) {
         this.lankanimi = lankanimi;
         this.alue = alue;
-        this.lankaviestimaara = 0;                
+        this.lankaviestimaara = 0;     
+        this.viimeisinAika = new Timestamp(0);
     }
 
     /* 
