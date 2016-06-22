@@ -130,12 +130,95 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         return viestit;
     }
 
-    public List<Viesti> findAllWhereXIsK(Integer key) throws SQLException {
+    public List<Viesti> findAllWithLankaId(Integer key) throws SQLException {
 
         Connection connection = database.getConnection();
         String query = "SELECT * FROM Viesti WHERE lanka_id = ?";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setObject(1, key);
+
+        ResultSet rs = stmt.executeQuery();
+        List<Viesti> viestit = new ArrayList<>();
+
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            String sisalto = rs.getString("sisalto");
+            String kayttajaId = rs.getString("kayttaja_id");
+            int lankaId = rs.getInt("lanka_id");
+            Timestamp lahetysaika = rs.getTimestamp("lahetysaika");
+
+            viestit.add(new Viesti(id, sisalto, kayttajaDao.findOne(kayttajaId), lankaDao.findOne(lankaId), lahetysaika));
+        }
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return viestit;
+    }
+
+    public List<Viesti> find15WithLankaId(int lankaId, int offset) throws SQLException {
+        String query = "SELECT * FROM Viesti WHERE lanka_id = ? ORDER BY lahetysaika DESC LIMIT 15 OFFSET ?";
+        Object[] params = {lankaId, offset * 15};
+
+        return findAllWithQueryAndParams(query, params);
+    }
+
+    private List<Viesti> findAllWithQueryAndParams(String query, Object... params) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement(query);
+        for (int i = 0; i < params.length; i++) {
+            stmt.setObject(i + 1, params[i]);
+        }
+
+        ResultSet rs = stmt.executeQuery();
+        List<Viesti> viestit = new ArrayList<>();
+
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            String sisalto = rs.getString("sisalto");
+            String kayttajaId = rs.getString("kayttaja_id");
+            int lankaId = rs.getInt("lanka_id");
+            Timestamp lahetysaika = rs.getTimestamp("lahetysaika");
+
+            viestit.add(new Viesti(id, sisalto, kayttajaDao.findOne(kayttajaId), lankaDao.findOne(lankaId), lahetysaika));
+        }
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return viestit;
+    }
+
+    public int findCountOfViestiInLanka(int lankaId) throws SQLException {
+        Connection connection = database.getConnection();
+        String query = "SELECT count(*) FROM Viesti WHERE lanka_id = ?";
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setObject(1, lankaId);
+
+        ResultSet rs = stmt.executeQuery();
+
+        boolean hasOne = rs.next();
+        if (!hasOne) {
+            return -1;
+        }
+
+        int count = rs.getInt("count(*)");
+
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return count;
+    }
+
+    public List<Viesti> findAllWithUserId(String userId) throws SQLException {
+
+        Connection connection = database.getConnection();
+        String query = "SELECT * FROM Viesti WHERE kayttaja_id = ?";
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setObject(1, userId);
 
         ResultSet rs = stmt.executeQuery();
         List<Viesti> viestit = new ArrayList<>();

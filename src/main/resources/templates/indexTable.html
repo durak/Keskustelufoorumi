@@ -1,0 +1,150 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>IljamiBBS</title>
+        <meta charset="UTF-8" />    
+        <style>
+            html {
+                overflow-y: scroll;
+            }
+            body {
+                background: #CAECFF;
+                font-family: 'Trebuchet MS', sans-serif;
+                font-size: 14px;
+
+            }
+
+            input[type="submit"] {
+                background: #1057FF;
+                border: 1px solid #073BFF;
+                padding: 1px 3px;
+                font-family: 'Trebuchet MS', sans-serif;
+                font-size: 14px;
+                font-weight: bold;
+                -moz-border-radius: 2px;
+                -webkit-border-radius: 2px;
+                color: white;
+            }
+
+            div.page {
+                background: white;
+                border: 1px solid #6ECCFF;
+                width: 700px;
+                margin: 60px auto;
+            }
+            div.page h1 {
+                background: #6ECCFF;
+                margin: 0;
+                padding: 10px 14px;
+                color: white;
+                letter-spacing: 1px;
+                text-shadow: 0 0 3px #2477FF;
+                font-weight: normal;
+            }
+
+            div.page h1 a {
+                text-decoration: none;
+                color: white;
+            }
+            div.page h2 {
+                /*margin: 0 0 15px 25px;*/                
+                margin: 25px;
+                color: #1057FF;
+                text-shadow: 0 1px 2px #ccc;
+            }
+
+            div.page ul.messages {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            div.page ul.messages li {
+                margin: 10px 0;
+                padding: 5px;
+                background: #F0FAFF;
+                border: 1px solid #DBF3FF;
+                -moz-border-radius: 5px;
+                -webkit-border-radius: 5px;
+                min-height: 48px;
+            }
+
+            table {
+                width: 670px;
+                background-color: #F0FAFF;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 15px;
+            }
+
+            td.center {
+                text-align: center;
+            }
+            th.center {
+                text-align: center;
+            }
+            td.left {
+                text-align: left;
+
+            }
+            th.left {
+                text-align: left;
+            }
+
+            p {
+                margin: 10px 10px 10px 25px;
+            }
+
+        </style>
+
+    </head>
+
+
+
+    <body>
+        <div class="page">
+            <h1>IljamiBBS</h1>            
+
+            <table>
+                <colgroup>
+                    <col style="width:40%"/>
+                    <col style="width:30%"/>
+                    <col style="width:30%"/>
+                </colgroup>
+                <tr>
+                    <th class ="left">Aluenimi</th>
+                    <th class ="center">Viestimäärä</th>
+                    <th class ="center">Viimeisin viesti</th>
+                </tr>
+                <tr th:each="alue: ${alueet}">
+                    <td class="left">
+                        <a th:href="${'/alue/' + alue.id + '?sivu=0'}">
+                            <span th:text="${alue.aluenimi}"></span>
+                        </a>
+                    </td>
+                    <td class="center" th:text="${alue.alueviestimaara}"></td>
+                    <td class="center" th:text="${alue.viimeisinAika}"></td>       
+                </tr>
+            </table>
+
+            <!--
+                    <ul class="messages">            
+                        <li th:each="alue: ${alueet}">                
+                            <a th:href="${'/alue/' + alue.id + '?sivu=0'}"><span th:text="${alue.aluenimi}"></span></a>
+                            <span th:text="${alue.alueviestimaara}"></span>
+                            <span th:text="${alue.viimeisinAika}"></span>        
+        
+                        </li>
+                    </ul>
+            -->
+
+            <h2> Luo uusi keskustelualue </h2>
+            <form method="POST" action="/">                        
+                <p>Keskustelualueen nimi</p>
+                <p><input type="text" name="aluenimi"/></p>
+                <p><input type="submit" value="Luo"/></p>
+            </form>
+        </div>
+    </body>
+</html>

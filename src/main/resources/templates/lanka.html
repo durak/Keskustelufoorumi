@@ -12,8 +12,10 @@
             <span th:text="${lanka.lankanimi}"></span></h1>
         <ul>            
             <li th:each="viesti: ${viestit}">
-
-                <span th:text="${viesti.kayttaja.id}"></span>
+                <a th:href="${'/kayttaja/' + viesti.kayttaja.id}">
+                    <span th:text="${viesti.kayttaja.id}"></span>
+                </a>
+                
                 <span th:text="${viesti.sisalto}"></span>
                 <span th:text="${viesti.lahetysaika}"></span>        
 

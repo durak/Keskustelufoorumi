@@ -2,6 +2,7 @@ package keskustelufoorumi.database;
 
 import java.util.*;
 import java.sql.*;
+import keskustelufoorumi.domain.Alue;
 import keskustelufoorumi.domain.Lanka;
 
 public class LankaDao implements Dao<Lanka, Integer> {
@@ -122,14 +123,106 @@ public class LankaDao implements Dao<Lanka, Integer> {
 
         return langat;
     }
-
-    
-    public List<Lanka> findAllWhereXIsK(Integer key) throws SQLException {
+        
+      
+    public int findCountOfLankaInAlue(int alueId) throws SQLException {        
         Connection connection = database.getConnection();
-        String query = "SELECT * FROM Lanka WHERE alue_id = ?";
+        String query = "SELECT count(*) FROM Lanka WHERE alue_id = ?";
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setObject(1, alueId);
+        
+        ResultSet rs = stmt.executeQuery();
+                         
+        boolean hasOne = rs.next();
+        if (!hasOne) {
+            return -1;
+        }
+        
+        int count = rs.getInt("count(*)");
+        
+        rs.close();
+        stmt.close();
+        connection.close();
+                
+        return count;
+    }
+    
+    
+    
+    
+    
+    
+//    public List<Lanka> findAllWithAlueId(Integer key) throws SQLException {
+//        Connection connection = database.getConnection();
+//        String query = "SELECT * FROM Lanka WHERE alue_id = ?";
+//        PreparedStatement stmt = connection.prepareStatement(query);
+//        stmt.setObject(1, key);
+//        
+//        ResultSet rs = stmt.executeQuery();
+//        List<Lanka> langat = new ArrayList<>();
+//
+//        while (rs.next()) {
+//            int id = rs.getInt("id");
+//            String lankanimi = rs.getString("lankanimi");
+//            int lankaviestimaara = rs.getInt("lankaviestimaara");
+//            int alueId = rs.getInt("alue_id");
+//            Timestamp viimeisinAika = rs.getTimestamp("viimeisin_aika");
+//            langat.add(new Lanka(id, lankanimi, alueDao.findOne(alueId), lankaviestimaara, viimeisinAika));
+//        }
+//
+//        rs.close();
+//        stmt.close();
+//        connection.close();
+//
+//        return langat;
+//    }
+    /*
+     * järjestetty ja limitoitu versio
+     */
+    private List<Lanka> findAllWithQueryAndParams(String query, Object... params) throws SQLException {
+        Connection connection = database.getConnection();
+        PreparedStatement stmt = connection.prepareStatement(query);
+        for (int i = 0; i < params.length; i++) {
+            stmt.setObject(i + 1, params[i]);
+        }
+        
+        
+        
+        ResultSet rs = stmt.executeQuery();
+        List<Lanka> langat = new ArrayList<>();
+        
+        
+        
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            String lankanimi = rs.getString("lankanimi");
+            int lankaviestimaara = rs.getInt("lankaviestimaara");
+            int alueId = rs.getInt("alue_id");
+            Timestamp viimeisinAika = rs.getTimestamp("viimeisin_aika");
+            langat.add(new Lanka(id, lankanimi, alueDao.findOne(alueId), lankaviestimaara, viimeisinAika));
+        }
+        
+        
+        rs.close();
+        stmt.close();
+        connection.close();
+
+        return langat;
+    }
+    
+    public List<Lanka> findTenInAlueIdWithOffset(int alueId, int offset) throws SQLException {
+        String query = "SELECT * FROM Lanka WHERE alue_id = ? ORDER BY viimeisin_aika DESC LIMIT 10 OFFSET ?";
+        Object[] params = {alueId, offset * 10};
+        
+        return findAllWithQueryAndParams(query, params);
+    }
+
+    public List<Lanka> findAllWithAlueId(Integer key) throws SQLException {
+        Connection connection = database.getConnection();
+        String query = "SELECT * FROM Lanka WHERE alue_id = ? ORDER BY viimeisin_aika DESC";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setObject(1, key);
-        
+
         ResultSet rs = stmt.executeQuery();
         List<Lanka> langat = new ArrayList<>();
 

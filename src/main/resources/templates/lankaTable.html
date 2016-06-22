@@ -1,0 +1,183 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title th:text="${lanka.lankanimi}"></title>
+        <meta charset="utf-8" />
+        <style>
+            html {
+                overflow-y: scroll;
+            }
+            body {
+                background: #CAECFF;
+                font-family: 'Trebuchet MS', sans-serif;
+                font-size: 14px;
+
+            }
+
+            input[type="submit"] {
+                background: #1057FF;
+                border: 1px solid #073BFF;
+                padding: 1px 3px;
+                font-family: 'Trebuchet MS', sans-serif;
+                font-size: 14px;
+                font-weight: bold;
+                -moz-border-radius: 2px;
+                -webkit-border-radius: 2px;
+                color: white;
+            }
+
+            div.page {
+                background: white;
+                border: 1px solid #6ECCFF;
+                width: 700px;
+                margin: 60px auto;
+            }
+            div.page h1 {
+                background: #6ECCFF;
+                margin: 0;
+                padding: 10px 14px;
+                color: white;
+                letter-spacing: 1px;
+                text-shadow: 0 0 3px #2477FF;
+                font-weight: normal;
+            }
+            div.page h1 a {
+                text-decoration: none;
+                color: white;
+            }
+            div.page h2 {
+                margin: 0 0 15px 25px;
+                color: #1057FF;
+                text-shadow: 0 1px 2px #ccc;
+            }
+            
+            div.page h3 {
+                text-align: center;
+                color: #1057FF;
+                padding: 14px;
+                text-shadow: 0 1px 2px #ccc;
+            }
+
+            div.page ul.messages {
+                list-style: none;
+                margin: 10px;
+                padding: 0;
+            }
+
+            div.page ul.messages li {
+                margin: 10px 0;
+                padding: 5px;
+                background: #F0FAFF;
+                border: 1px solid #DBF3FF;
+                -moz-border-radius: 5px;
+                -webkit-border-radius: 5px;
+                min-height: 48px;
+            }
+
+            div.page ul.messages li small {
+                font-size: 0.9em;
+                color: #888;                
+
+            }
+
+            table {
+                background-color: #F0FAFF;
+                margin: 25px 25px 25px 25px;
+            }
+
+            td.center {
+                text-align: center;
+            }
+            th.center {
+                text-align: center;
+            }
+            td.left {
+                text-align: left;
+
+            }
+            th.left {
+                text-align: left;
+            }
+
+            p {
+                margin: 10px 10px 10px 25px;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div class="page">
+            <!--
+            <h1>
+                <span th:text="${alue.aluenimi}"></span>
+                <span> / </span>
+                <span th:text="${lanka.lankanimi}"></span>
+            </h1>
+            -->
+            <h1>
+                <a th:href="${'/'}">
+                    <span>Alueet / </span>
+                </a>
+                <a th:href="${'/alue/' + alue.id + '?sivu=0'}">
+                    <span th:text="${alue.aluenimi}"></span>
+                </a>
+                
+            </h1>
+            <h3>~<span th:text="${lanka.lankanimi}"></span>~</h3>
+
+            <!--
+            <table style ="width:95%">
+
+                <tr>
+                    <th>Nimimerkki</th>
+                    <th>Viesti</th>
+                    <th>Lähetysaika</th>
+                </tr>
+                <tr th:each="viesti: ${viestit}">
+                    <td>
+                        <a th:href="${'/kayttaja/' + viesti.kayttaja.id}">
+                            <span th:text="${viesti.kayttaja.id}"></span>
+                        </a>
+                    </td>
+                    <td th:text="${viesti.sisalto}"></td>
+                    <td th:text="${viesti.lahetysaika}"></td>       
+                </tr>
+            </table>
+
+            -->
+
+            <ul class="messages">            
+                <li th:each="viesti: ${viestit}">
+                    <small><span th:text="${viesti.lahetysaika}"></span></small><br></br>
+                    <a th:href="${'/kayttaja/' + viesti.kayttaja.id}">
+                        <span th:text="${viesti.kayttaja.id}"></span>
+                    </a>
+                    kirjoitti:
+                    <span th:text="${viesti.sisalto}"></span>
+
+
+                </li>
+            </ul>
+
+
+
+
+            <p>
+                <a th:href="${'/alue/' + alue.id + '/' + lanka.id + '?sivu=' + edellinen}"><span th:text="${edellinen != null} ? 'edelliset'">edelliset langat</span></a>
+                <a th:href="${'/alue/' + alue.id + '/' + lanka.id + '?sivu=' + seuraava}"><span th:text="${seuraava != null} ? 'seuraavat'">seuraavat langat</span></a>
+            </p>
+
+            <h2> Kirjoita viesti </h2>        
+            <form method="POST">                        
+                <p>Anna nimimerkki:</p>
+                <p><input type="text" name="nimimerkki"/></p>
+                <p>Anna viesti:</p>
+                <p><textarea name="sisalto"/></p>
+                <p><input type="submit" value="Laheta"/></p>
+            </form>
+
+        </div>
+    </body>
+</html>
