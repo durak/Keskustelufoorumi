@@ -158,7 +158,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     }
 
     public List<Viesti> find15WithLankaId(int lankaId, int offset) throws SQLException {
-        String query = "SELECT * FROM Viesti WHERE lanka_id = ? ORDER BY lahetysaika DESC LIMIT 15 OFFSET ?";
+        String query = "SELECT * FROM Viesti WHERE lanka_id = ? ORDER BY lahetysaika ASC LIMIT 15 OFFSET ?";
         Object[] params = {lankaId, offset * 15};
 
         return findAllWithQueryAndParams(query, params);

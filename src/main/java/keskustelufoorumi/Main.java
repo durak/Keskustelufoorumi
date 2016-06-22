@@ -15,6 +15,7 @@ import keskustelufoorumi.domain.Lanka;
 import keskustelufoorumi.domain.Viesti;
 import keskustelufoorumi.ui.TekstiUi;
 import spark.ModelAndView;
+import spark.Spark;
 import static spark.Spark.get;
 import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
@@ -30,7 +31,7 @@ public class Main {
         Database database = new Database();
         DaoManager daoManager = new DaoManager(database);
 
-
+//        Spark.staticFileLocation("/public");
   
         
         /*
@@ -45,7 +46,7 @@ public class Main {
 
             
                     
-            return new ModelAndView(map, "indexTable");
+            return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
 
         post("/", (req, res) -> {
@@ -95,7 +96,7 @@ public class Main {
                 map.put("edellinen", null);
             }
 
-            return new ModelAndView(map, "alueTable");
+            return new ModelAndView(map, "alue");
         }, new ThymeleafTemplateEngine());
 
         post("/alue/:id", (req, res) -> {
@@ -141,7 +142,7 @@ public class Main {
                 map.put("edellinen", null);
             }
 
-            return new ModelAndView(map, "lankaTable");
+            return new ModelAndView(map, "lanka");
         }, new ThymeleafTemplateEngine());
 
         post("/alue/:alue.id/:id", (req, res) -> {

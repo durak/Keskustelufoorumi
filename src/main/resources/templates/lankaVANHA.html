@@ -1,0 +1,35 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Lanka</title>
+        <meta charset="utf-8" />
+    </head>
+
+    <body>
+        <h1>
+            <span th:text="${alue.aluenimi}"></span>
+            <span th:text="${lanka.lankanimi}"></span></h1>
+        <ul>            
+            <li th:each="viesti: ${viestit}">
+                <a th:href="${'/kayttaja/' + viesti.kayttaja.id}">
+                    <span th:text="${viesti.kayttaja.id}"></span>
+                </a>
+                
+                <span th:text="${viesti.sisalto}"></span>
+                <span th:text="${viesti.lahetysaika}"></span>        
+
+            </li>
+        </ul>
+
+        <h2> Kirjoita viesti </h2>        
+        <form method="POST">                        
+            Anna nimimerkki:<br/>
+            <input type="text" name="nimimerkki"/><br/>
+            Anna viesti:<br/>
+            <textarea name="sisalto"/><br/>
+            <input type="submit" value="Luo"/>
+        </form>
+
+    </body>
+</html>
