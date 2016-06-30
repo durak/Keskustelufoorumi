@@ -73,10 +73,10 @@ public class Database {
         ArrayList<String> lista = new ArrayList<>();
 
         // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
-        lista.add("DROP TABLE Alue;");
-        lista.add("DROP TABLE Lanka;");
-        lista.add("DROP TABLE Viesti;");
-        lista.add("DROP TABLE Kayttaja;");
+//        lista.add("DROP TABLE Alue;");
+//        lista.add("DROP TABLE Lanka;");
+//        lista.add("DROP TABLE Viesti;");
+//        lista.add("DROP TABLE Kayttaja;");
         
         lista.add("CREATE TABLE Kayttaja "
                 + "(id varchar(20) serial PRIMARY KEY);");
