@@ -31,17 +31,15 @@ public class Main {
 
         Database database = new Database();
         DaoManager daoManager = new DaoManager(database);
-        
+        AlueDao alueDao = daoManager.getAlueDao();
         LankaDao lankaDao = daoManager.getLankaDao();
+        ViestiDao viestiDao = daoManager.getViestiDao();
+        KayttajaDao kayttajaDao = daoManager.getKayttajaDao();
 
-//        staticFileLocation("/public");
-//        Spark.externalStaticFileLocation(Paths.get("").toAbsolutePath().toString() + "/src/main/resources/public");
         /*
-         * Aluenäkymä
+         * Etusivu / Aluevalikko
          */
         get("/", (req, res) -> {
-            AlueDao alueDao = daoManager.getAlueDao();
-
             Map map = new HashMap<>();
             map.put("alueet", alueDao.findAll());
 
@@ -51,31 +49,17 @@ public class Main {
         post("/", (req, res) -> {
             String aluenimi = req.queryParams("aluenimi");
             Alue uusiAlue = new Alue(aluenimi);
-            daoManager.getAlueDao().insertNewInstance(uusiAlue);
-
-            return "<meta http-equiv=\"refresh\" content=\"0; url=/\">";
+            alueDao.insertNewInstance(uusiAlue);
+            res.redirect("/");
+            return null;
+//            return "<meta http-equiv=\"refresh\" content=\"0; url=/\">";
+        
         });
-
+        
         /*
-         * Alueen langat
-         */
-//        get("/alue/:id", (req, res) -> {
-//            AlueDao alueDao = daoManager.getAlueDao();
-//            LankaDao lankaDao = daoManager.getLankaDao();
-//
-//            HashMap map = new HashMap<>();
-//            map.put("alue", alueDao.findOne(Integer.parseInt(req.params("id"))));
-//            map.put("langat", lankaDao.findAllWithAlueId(Integer.parseInt(req.params("id"))));
-//
-//            return new ModelAndView(map, "alueTable");
-//        }, new ThymeleafTemplateEngine());
-        /*
-         *
-         * Alueen langat 10 kerrallaan
+         * Valitun alueen langat
          */
         get("/alue/:id", (req, res) -> {
-            AlueDao alueDao = daoManager.getAlueDao();
-            LankaDao lankaDao = daoManager.getLankaDao();
             int alueId = Integer.parseInt(req.params("id"));
             int sivu = Integer.parseInt(req.queryParams("sivu"));
 
@@ -98,27 +82,32 @@ public class Main {
             return new ModelAndView(map, "alue");
         }, new ThymeleafTemplateEngine());
 
+        before("/alue/:id", (req, res) -> {
+            int alueId = Integer.parseInt(req.params("id"));
+            if (alueDao.findOne(alueId) == null) {
+                halt(404, "Aluetta ei löytynyt");
+            }
+        });
+
         post("/alue/:id", (req, res) -> {
-            LankaDao lankaDao = daoManager.getLankaDao();
             String lankanimi = req.queryParams("lankanimi");
             int alueId = Integer.parseInt(req.params("id"));
 
-            Alue alue = daoManager.getAlueDao().findOne(alueId);
+            Alue alue = alueDao.findOne(alueId);
             Lanka uusiLanka = new Lanka(lankanimi, alue);
 
             lankaDao.insertNewInstance(uusiLanka);
 
             String paluuOsoite = "/alue/" + alue.getId() + "/" + lankaDao.getMaxId() + "?sivu=0";
-            return "<meta http-equiv=\"refresh\" content=\"0; url=" + paluuOsoite + "\">";
+            res.redirect(paluuOsoite);
+            return null;
+//            return "<meta http-equiv=\"refresh\" content=\"0; url=" + paluuOsoite + "\">";
         });
 
         /*
-         * Langan viestit
+         * Valitun langan viestit
          */
         get("/alue/:alue.id/:id", (req, res) -> {
-            AlueDao alueDao = daoManager.getAlueDao();
-            LankaDao lankaDao = daoManager.getLankaDao();
-            ViestiDao viestiDao = daoManager.getViestiDao();
             int alueId = Integer.parseInt(req.params("alue.id"));
             int lankaId = Integer.parseInt(req.params("id"));
             int sivu = Integer.parseInt(req.queryParams("sivu"));
@@ -126,7 +115,6 @@ public class Main {
             HashMap map = new HashMap<>();
             map.put("alue", alueDao.findOne(alueId));
             map.put("lanka", lankaDao.findOne(lankaId));
-//            map.put("viestit", viestiDao.findAllWithLankaId(lankaId));
             map.put("viestit", viestiDao.find15WithLankaId(lankaId, sivu));
 
             if (viestiDao.findCountOfViestiInLanka(lankaId) > (sivu + 1) * 15) {
@@ -146,21 +134,19 @@ public class Main {
 
         before("/alue/:alue.id/:id", (req, res) -> {
             int lankaId = Integer.parseInt(req.params("id"));
-            
+            if (lankaDao.findOne(lankaId) == null) {
+                halt(404, "Lankaa ei löytynyt");
+            }
         });
 
         post("/alue/:alue.id/:id", (req, res) -> {
-            AlueDao alueDao = daoManager.getAlueDao();
-            LankaDao lankaDao = daoManager.getLankaDao();
-            ViestiDao viestiDao = daoManager.getViestiDao();
-            KayttajaDao kayttajaDao = daoManager.getKayttajaDao();
             int sivu = Integer.parseInt(req.queryParams("sivu"));
 
             int lankaId = Integer.parseInt(req.params("id"));
             String nimimerkki = req.queryParams("nimimerkki");
             String sisalto = req.queryParams("sisalto");
             sisalto = html2text(sisalto);
-//            sisalto = sisalto.replaceAll("\\<.*?\\>", "");
+
 
             Lanka lanka = lankaDao.findOne(lankaId);
             Alue alue = lanka.getAlue();
@@ -179,8 +165,9 @@ public class Main {
             viestiDao.insertNewInstance(uusiViesti);
 
             String paluuOsoite = "/alue/" + alue.getId() + "/" + lanka.getId() + "?sivu=0";
-
-            return "<meta http-equiv=\"refresh\" content=\"0; url=" + paluuOsoite + "\">";
+            res.redirect(paluuOsoite);
+            return null;
+//            return "<meta http-equiv=\"refresh\" content=\"0; url=" + paluuOsoite + "\">";
 
         });
 
@@ -188,15 +175,9 @@ public class Main {
          * Käyttäjän viestit
          */
         get("/kayttaja/:id", (req, res) -> {
-            AlueDao alueDao = daoManager.getAlueDao();
-            LankaDao lankaDao = daoManager.getLankaDao();
-            ViestiDao viestiDao = daoManager.getViestiDao();
-
             String kayttajaId = req.params("id");
-
             HashMap map = new HashMap<>();
-
-            map.put("kayttaja", daoManager.getKayttajaDao().findOne(kayttajaId));
+            map.put("kayttaja", kayttajaDao.findOne(kayttajaId));
             map.put("viestit", viestiDao.findAllWithUserId(kayttajaId));
 
             return new ModelAndView(map, "kayttaja");
@@ -204,14 +185,12 @@ public class Main {
 
         before("/kayttaja/:id", (req, res) -> {
             String kayttajaId = req.params("id");
-            if (daoManager.getKayttajaDao().findOne(kayttajaId) == null) {
+            if (kayttajaDao.findOne(kayttajaId) == null) {
                 halt(404, "Käyttäjää ei löytynyt");
             }
         });
 
-//        Scanner lukija = new Scanner(System.in);
-//        TekstiUi tekstiUi = new TekstiUi(lukija, daoManager);
-//        tekstiUi.kaynnista();
+
     }
 
     public static String html2text(String html) {

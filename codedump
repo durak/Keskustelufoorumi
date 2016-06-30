@@ -78,3 +78,22 @@
 //        }
 //        System.out.println("");
 //    }
+
+
+        /*
+         * Alueen langat
+         */
+//        get("/alue/:id", (req, res) -> {
+//            AlueDao alueDao = daoManager.getAlueDao();
+//            LankaDao lankaDao = daoManager.getLankaDao();
+//
+//            HashMap map = new HashMap<>();
+//            map.put("alue", alueDao.findOne(Integer.parseInt(req.params("id"))));
+//            map.put("langat", lankaDao.findAllWithAlueId(Integer.parseInt(req.params("id"))));
+//
+//            return new ModelAndView(map, "alueTable");
+//        }, new ThymeleafTemplateEngine());
+        /*
+         *
+         * Alueen langat 10 kerrallaan
+         */
