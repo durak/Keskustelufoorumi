@@ -75,6 +75,7 @@
                 -moz-border-radius: 5px;
                 -webkit-border-radius: 5px;
                 min-height: 48px;
+                overflow-wrap: break-word;
             }
 
             div.page ul.messages li small {
@@ -177,9 +178,9 @@
             <h2> Kirjoita viesti </h2>        
             <form method="POST">                        
                 <p>Anna nimimerkki:</p>
-                <p><input type="text" name="nimimerkki"/></p>
+                <p><input type="text" name="nimimerkki" maxlength="20"/></p>
                 <p>Anna viesti:</p>
-                <p><textarea name="sisalto"/></p>
+                <p><textarea name="sisalto" maxlength="140"/></p>
                 <p><input type="submit" value="Laheta"/></p>
             </form>
 

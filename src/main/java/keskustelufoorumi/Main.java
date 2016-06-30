@@ -15,6 +15,7 @@ import keskustelufoorumi.domain.Kayttaja;
 import keskustelufoorumi.domain.Lanka;
 import keskustelufoorumi.domain.Viesti;
 import keskustelufoorumi.ui.TekstiUi;
+import org.jsoup.Jsoup;
 import spark.ModelAndView;
 import spark.Spark;
 import static spark.Spark.get;
@@ -24,19 +25,17 @@ import static spark.Spark.get;
 import static spark.Spark.get;
 import static spark.Spark.get;
 
-
 public class Main {
 
     public static void main(String[] args) throws Exception {
 
         Database database = new Database();
         DaoManager daoManager = new DaoManager(database);
+        
+        LankaDao lankaDao = daoManager.getLankaDao();
 
-        staticFileLocation("/public");
+//        staticFileLocation("/public");
 //        Spark.externalStaticFileLocation(Paths.get("").toAbsolutePath().toString() + "/src/main/resources/public");
-        
-  
-        
         /*
          * Aluenäkymä
          */
@@ -45,10 +44,7 @@ public class Main {
 
             Map map = new HashMap<>();
             map.put("alueet", alueDao.findAll());
-            
 
-            
-                    
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
 
@@ -148,6 +144,11 @@ public class Main {
             return new ModelAndView(map, "lanka");
         }, new ThymeleafTemplateEngine());
 
+        before("/alue/:alue.id/:id", (req, res) -> {
+            int lankaId = Integer.parseInt(req.params("id"));
+            
+        });
+
         post("/alue/:alue.id/:id", (req, res) -> {
             AlueDao alueDao = daoManager.getAlueDao();
             LankaDao lankaDao = daoManager.getLankaDao();
@@ -158,6 +159,8 @@ public class Main {
             int lankaId = Integer.parseInt(req.params("id"));
             String nimimerkki = req.queryParams("nimimerkki");
             String sisalto = req.queryParams("sisalto");
+            sisalto = html2text(sisalto);
+//            sisalto = sisalto.replaceAll("\\<.*?\\>", "");
 
             Lanka lanka = lankaDao.findOne(lankaId);
             Alue alue = lanka.getAlue();
@@ -199,9 +202,20 @@ public class Main {
             return new ModelAndView(map, "kayttaja");
         }, new ThymeleafTemplateEngine());
 
+        before("/kayttaja/:id", (req, res) -> {
+            String kayttajaId = req.params("id");
+            if (daoManager.getKayttajaDao().findOne(kayttajaId) == null) {
+                halt(404, "Käyttäjää ei löytynyt");
+            }
+        });
+
 //        Scanner lukija = new Scanner(System.in);
 //        TekstiUi tekstiUi = new TekstiUi(lukija, daoManager);
 //        tekstiUi.kaynnista();
+    }
+
+    public static String html2text(String html) {
+        return Jsoup.parse(html).text();
     }
 
 }

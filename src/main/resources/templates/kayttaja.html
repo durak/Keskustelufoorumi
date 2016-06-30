@@ -47,7 +47,7 @@
                 text-decoration: none;
                 color: white;
             }
-            
+
             div.page h2 {
                 margin: 0 0 15px 25px;
                 color: #1057FF;
@@ -68,6 +68,7 @@
                 -moz-border-radius: 5px;
                 -webkit-border-radius: 5px;
                 min-height: 48px;
+                overflow-wrap: break-word;
             }
 
             div.page ul.messages li small {
@@ -106,13 +107,22 @@
         <div class="page">
             <h1>
                 <span th:text="${kayttaja.id}"></span>
+                viestihistoria
             </h1>
             <ul class="messages">            
                 <li th:each="viesti: ${viestit}">
                     <small><span th:text="${viesti.lahetysaika}"></span></small>
                     <br></br>
-                    <span th:text="${viesti.lanka.alue.aluenimi}"></span>
-                    <span th:text="${viesti.lanka.lankanimi}"></span>
+                    <a th:href="${'/alue/' + viesti.lanka.alue.id + '?sivu=0'}">
+                        <span th:text="${viesti.lanka.alue.aluenimi}"></span>
+                    </a>
+                    <span> / </span>                     
+                    <a th:href="${'/alue/' + viesti.lanka.alue.id + '/' + viesti.lanka.id + '?sivu=0'}">
+                        <span th:text="${viesti.lanka.lankanimi}"></span>
+                    </a>                    
+                    <span> : </span>
+                    <br></br>
+
                     <span th:text="${viesti.sisalto}"></span>
 
 
