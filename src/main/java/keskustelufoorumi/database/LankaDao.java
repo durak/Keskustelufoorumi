@@ -127,7 +127,7 @@ public class LankaDao implements Dao<Lanka, Integer> {
       
     public int findCountOfLankaInAlue(int alueId) throws SQLException {        
         Connection connection = database.getConnection();
-        String query = "SELECT count(*) FROM Lanka WHERE alue_id = ?;";
+        String query = "SELECT count(*) AS lkm FROM Lanka WHERE alue_id = ?;";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setObject(1, alueId);
         
@@ -138,7 +138,7 @@ public class LankaDao implements Dao<Lanka, Integer> {
             return -1;
         }
         
-        int count = rs.getInt("count(*)");
+        int count = rs.getInt("lkm");
         
         rs.close();
         stmt.close();

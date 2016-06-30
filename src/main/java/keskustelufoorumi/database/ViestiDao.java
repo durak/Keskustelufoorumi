@@ -193,7 +193,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
     public int findCountOfViestiInLanka(int lankaId) throws SQLException {
         Connection connection = database.getConnection();
-        String query = "SELECT count(*) FROM Viesti WHERE lanka_id = ?;";
+        String query = "SELECT count(*) AS lkm FROM Viesti WHERE lanka_id = ?;";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setObject(1, lankaId);
 
@@ -204,7 +204,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
             return -1;
         }
 
-        int count = rs.getInt("count(*)");
+        int count = rs.getInt("lkm");
 
         rs.close();
         stmt.close();
