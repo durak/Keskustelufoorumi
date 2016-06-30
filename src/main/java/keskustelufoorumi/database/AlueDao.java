@@ -15,7 +15,7 @@ public class AlueDao implements Dao<Alue, Integer> {
 
     public int getMaxId() throws SQLException {
         Connection connection = database.getConnection();
-        String query = "SELECT max(id) FROM Alue;";
+        String query = "SELECT max(id) AS max_id FROM Alue;";
 
         PreparedStatement stmt = connection.prepareStatement(query);
 
@@ -26,7 +26,7 @@ public class AlueDao implements Dao<Alue, Integer> {
             return -1;
         }
         
-        int maxId = rs.getInt("max(id)");
+        int maxId = rs.getInt("max_id");
         
         rs.close();
         stmt.close();

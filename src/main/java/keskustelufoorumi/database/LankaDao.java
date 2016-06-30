@@ -17,7 +17,7 @@ public class LankaDao implements Dao<Lanka, Integer> {
 
     public int getMaxId() throws SQLException {
         Connection connection = database.getConnection();
-        String query = "SELECT max(id) FROM Lanka;";
+        String query = "SELECT max(id) AS max_id FROM Lanka;";
 
         PreparedStatement stmt = connection.prepareStatement(query);
 
@@ -28,7 +28,7 @@ public class LankaDao implements Dao<Lanka, Integer> {
             return -1;
         }
 
-        int maxId = rs.getInt("max(id)");
+        int maxId = rs.getInt("max_id");
 
         rs.close();
         stmt.close();
