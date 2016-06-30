@@ -137,17 +137,18 @@
                         </a>
                     </td>
                     <td class="center" th:text="${lanka.lankaviestimaara}"></td>
-                    <td class="center" th:text="${lanka.viimeisinAika}"></td>       
+                    <td class="center" th:text="${lanka.viimeisinAikaFormatted}"></td>                           
                 </tr>
             </table>
 
 
 
-            <p class="right">
-                <a th:href="${'/alue/' + alue.id + '?sivu=' + edellinen}"><span th:text="${edellinen != null} ? 'edelliset'">edelliset langat</span></a>
-                <a th:href="${'/alue/' + alue.id + '?sivu=' + seuraava}"><span th:text="${seuraava != null} ? 'seuraavat'">seuraavat langat</span></a>
-            </p>
 
+
+            <p class="right">                
+                <a th:if="${edellinen != null}" th:href="${'/alue/' + alue.id + '?sivu=' + edellinen}"><span>edelliset</span></a>                
+                <a th:if="${seuraava != null}" th:href="${'/alue/' + alue.id + '?sivu=' + seuraava}"><span>seuraavat</span></a>
+            </p>
 
 
 

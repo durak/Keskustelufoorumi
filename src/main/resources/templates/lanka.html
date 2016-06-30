@@ -47,13 +47,13 @@
                 color: white;
             }
             div.page h2 {
-                
+
                 margin: 0 0 15px 25px;
                 color: #1057FF;
                 text-shadow: 0 1px 2px #ccc;
             }
-            
-            div.page h3 {
+
+            div.page h3 {                
                 font-size: 1.5em;
                 text-align: left;
                 color: #1057FF;
@@ -115,13 +115,7 @@
 
     <body>
         <div class="page">
-            <!--
-            <h1>
-                <span th:text="${alue.aluenimi}"></span>
-                <span> / </span>
-                <span th:text="${lanka.lankanimi}"></span>
-            </h1>
-            -->
+
             <h1>
                 <a th:href="${'/'}">
                     <span>Alueet / </span>
@@ -129,34 +123,16 @@
                 <a th:href="${'/alue/' + alue.id + '?sivu=0'}">
                     <span th:text="${alue.aluenimi}"></span>
                 </a>
-                
+
             </h1>
+            <!--<h3><span th:text="${lanka.lankanimi}"></span></h3>-->
             <h3><span th:text="${lanka.lankanimi}"></span></h3>
 
-            <!--
-            <table style ="width:95%">
 
-                <tr>
-                    <th>Nimimerkki</th>
-                    <th>Viesti</th>
-                    <th>Lähetysaika</th>
-                </tr>
-                <tr th:each="viesti: ${viestit}">
-                    <td>
-                        <a th:href="${'/kayttaja/' + viesti.kayttaja.id}">
-                            <span th:text="${viesti.kayttaja.id}"></span>
-                        </a>
-                    </td>
-                    <td th:text="${viesti.sisalto}"></td>
-                    <td th:text="${viesti.lahetysaika}"></td>       
-                </tr>
-            </table>
-
-            -->
 
             <ul class="messages">            
                 <li th:each="viesti: ${viestit}">
-                    <small><span th:text="${viesti.lahetysaika}"></span></small><br></br>
+                    <small><span th:text="${viesti.lahetysaikaFormatted}"></span></small><br></br>
                     <a th:href="${'/kayttaja/' + viesti.kayttaja.id}">
                         <span th:text="${viesti.kayttaja.id}"></span>
                     </a>
@@ -170,10 +146,12 @@
 
 
 
-            <p class="right">
-                <a th:href="${'/alue/' + alue.id + '/' + lanka.id + '?sivu=' + edellinen}"><span th:text="${edellinen != null} ? 'edelliset'">edelliset langat</span></a>
-                <a th:href="${'/alue/' + alue.id + '/' + lanka.id + '?sivu=' + seuraava}"><span th:text="${seuraava != null} ? 'seuraavat'">seuraavat langat</span></a>
+            <p class="right">                
+                <a th:if="${edellinen != null}" th:href="${'/alue/' + alue.id + '/' + lanka.id + '?sivu=' + edellinen}"><span>edelliset</span></a>                
+                <a th:if="${seuraava != null}" th:href="${'/alue/' + alue.id + '/' + lanka.id + '?sivu=' + seuraava}"><span>seuraavat</span></a>
             </p>
+                        
+
 
             <h2> Kirjoita viesti </h2>        
             <form method="POST">                        

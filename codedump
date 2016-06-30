@@ -97,3 +97,53 @@
          *
          * Alueen langat 10 kerrallaan
          */
+
+
+            <!--
+                    <ul class="messages">            
+                        <li th:each="alue: ${alueet}">                
+                            <a th:href="${'/alue/' + alue.id + '?sivu=0'}"><span th:text="${alue.aluenimi}"></span></a>
+                            <span th:text="${alue.alueviestimaara}"></span>
+                            <span th:text="${alue.viimeisinAika}"></span>        
+        
+                        </li>
+                    </ul>
+            -->
+
+
+            <!--
+            <table style ="width:95%">
+
+                <tr>
+                    <th>Nimimerkki</th>
+                    <th>Viesti</th>
+                    <th>Lähetysaika</th>
+                </tr>
+                <tr th:each="viesti: ${viestit}">
+                    <td>
+                        <a th:href="${'/kayttaja/' + viesti.kayttaja.id}">
+                            <span th:text="${viesti.kayttaja.id}"></span>
+                        </a>
+                    </td>
+                    <td th:text="${viesti.sisalto}"></td>
+                    <td th:text="${viesti.lahetysaika}"></td>       
+                </tr>
+            </table>
+
+            -->
+
+            <!--
+            <h1>
+                <span th:text="${alue.aluenimi}"></span>
+                <span> / </span>
+                <span th:text="${lanka.lankanimi}"></span>
+            </h1>
+            -->
+
+<a th:href="${'/alue/' + alue.id + '/' + lanka.id + '?sivu=' + edellinen}"><span th:text="${edellinen != null} ? 'edelliset'">edelliset viestit</span></a>
+<a th:href="${'/alue/' + alue.id + '/' + lanka.id + '?sivu=' + seuraava}"><span th:text="${seuraava != null} ? 'seuraavat'">seuraavat viestit</span></a>
+
+            <p class="right">
+                <a th:href="${'/alue/' + alue.id + '?sivu=' + edellinen}"><span th:text="${edellinen != null} ? 'edelliset'">edelliset langat</span></a>
+                <a th:href="${'/alue/' + alue.id + '?sivu=' + seuraava}"><span th:text="${seuraava != null} ? 'seuraavat'">seuraavat langat</span></a>
+            </p>

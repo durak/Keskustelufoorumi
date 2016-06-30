@@ -111,7 +111,7 @@
             </h1>
             <ul class="messages">            
                 <li th:each="viesti: ${viestit}">
-                    <small><span th:text="${viesti.lahetysaika}"></span></small>
+                    <small><span th:text="${viesti.lahetysaikaFormatted}"></span></small>
                     <br></br>
                     <a th:href="${'/alue/' + viesti.lanka.alue.id + '?sivu=0'}">
                         <span th:text="${viesti.lanka.alue.aluenimi}"></span>

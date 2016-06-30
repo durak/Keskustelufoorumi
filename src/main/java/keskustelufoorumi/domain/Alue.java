@@ -1,6 +1,7 @@
 package keskustelufoorumi.domain;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 public class Alue {
 
@@ -8,19 +9,25 @@ public class Alue {
     private String aluenimi;
     private int alueviestimaara;
     private Timestamp viimeisinAika;
+    private String viimeisinAikaFormatted;
 
     public Alue(int id, String aluenimi, int alueviestimaara, Timestamp viimeisinAika) {
         this.id = id;
         this.aluenimi = aluenimi;
         this.alueviestimaara = alueviestimaara;
         this.viimeisinAika = viimeisinAika;
+        if (!viimeisinAika.equals(new Timestamp(0))) {
+            this.viimeisinAikaFormatted =  new SimpleDateFormat("yyyy-MM-dd @ HH:mm").format(viimeisinAika);
+        } else {
+            this.viimeisinAikaFormatted = "-";
+        }
+        
     }
 
     public Alue(String aluenimi) {        
         this.aluenimi = aluenimi;
         this.alueviestimaara = 0;        
-        this.viimeisinAika = new Timestamp(0);
-        
+        this.viimeisinAika = new Timestamp(0);        
     }
 
     /*
@@ -40,6 +47,10 @@ public class Alue {
 
     public Timestamp getViimeisinAika() {
         return viimeisinAika;
+    }
+    
+    public String getViimeisinAikaFormatted() {
+        return viimeisinAikaFormatted;
     }
 
     /*

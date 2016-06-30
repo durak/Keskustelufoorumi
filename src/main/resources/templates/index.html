@@ -9,35 +9,42 @@
                 overflow-y: scroll;
             }
             body {
-                background: #CAECFF;
-                font-family: 'Trebuchet MS', sans-serif;
+                background: black;
+                font-family: 'Lucida Console', Monaco, monospace;
                 font-size: 14px;
+                color: grey;
 
             }
 
             input[type="submit"] {
-                background: #1057FF;
+                background: green;
                 border: 1px solid #073BFF;
                 padding: 1px 3px;
-                font-family: 'Trebuchet MS', sans-serif;
+                font-family: 'Lucida Console', Monaco, monospace;
                 font-size: 14px;
                 font-weight: bold;
                 -moz-border-radius: 2px;
                 -webkit-border-radius: 2px;
-                color: white;
+                color: gray;
             }
 
             div.page {
-                background: white;
-                border: 1px solid #6ECCFF;
+                background: black;
+                border: 1px solid green;
                 width: 700px;
                 margin: 60px auto;
             }
+            
+            div.page pre {
+                margin: 25px;
+                text-align: center; 
+                color: grey;
+            }
             div.page h1 {
-                background: #6ECCFF;
+                background: green;
                 margin: 0;
                 padding: 10px 14px;
-                color: white;
+                color: gray;
                 letter-spacing: 1px;
                 text-shadow: 0 0 3px #2477FF;
                 font-weight: normal;
@@ -45,13 +52,13 @@
 
             div.page h1 a {
                 text-decoration: none;
-                color: white;
+                color: gray;
             }
             div.page h2 {
                 /*margin: 0 0 15px 25px;*/                
                 margin: 25px;
-                color: #1057FF;
-                text-shadow: 0 1px 2px #ccc;
+                color: green;
+                <!--text-shadow: 0 1px 2px #ccc;-->
             }
 
             div.page ul.messages {
@@ -72,10 +79,14 @@
 
             table {
                 width: 670px;
-                background-color: #F0FAFF;
+                background-color: black;
                 margin-left: auto;
                 margin-right: auto;
                 margin-top: 15px;
+            }
+            
+            table a {
+                color: green;
             }
 
             td.center {
@@ -86,7 +97,8 @@
             }
             td.left {
                 text-align: left;
-
+                color: grey;
+                
             }
             th.left {
                 text-align: left;
@@ -104,7 +116,17 @@
 
     <body>
         <div class="page">
-            <h1>IljamiBBS</h1>            
+            <pre>            
+  __  __          __                           __  _______   _______   _______ 
+ |__||  | ______ |__|.---.-. ______ .--------.|__||   _   \ |   _   \ |   _   |
+ |  ||  ||______||  ||  _  ||______||        ||  ||.  1   / |.  1   / |   1___|
+ |__||__|        |  ||___._|        |__|__|__||__||.  _   \ |.  _   \ |____   |
+                |___|                             |:  1    \|:  1    \|:  1   |
+                                                  |::.. .  /|::.. .  /|::.. . |
+                                                  `-------' `-------' `-------'
+                                                                                                                                       
+            </pre>
+            <h1>Alueet</h1>            
 
             <table>
                 <colgroup>
@@ -124,20 +146,11 @@
                         </a>
                     </td>
                     <td class="center" th:text="${alue.alueviestimaara}"></td>
-                    <td class="center" th:text="${alue.viimeisinAika}"></td>       
+                    <td class="center" th:text="${alue.viimeisinAikaFormatted}"></td>       
                 </tr>
             </table>
 
-            <!--
-                    <ul class="messages">            
-                        <li th:each="alue: ${alueet}">                
-                            <a th:href="${'/alue/' + alue.id + '?sivu=0'}"><span th:text="${alue.aluenimi}"></span></a>
-                            <span th:text="${alue.alueviestimaara}"></span>
-                            <span th:text="${alue.viimeisinAika}"></span>        
-        
-                        </li>
-                    </ul>
-            -->
+
 
             <h2> Luo uusi keskustelualue </h2>
             <form method="POST" action="/">                        

@@ -24,6 +24,10 @@ import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import static spark.Spark.get;
 import static spark.Spark.get;
 import static spark.Spark.get;
+import static spark.Spark.get;
+import static spark.Spark.get;
+import static spark.Spark.get;
+import static spark.Spark.get;
 
 public class Main {
 
@@ -31,8 +35,8 @@ public class Main {
 
         /*
          * Valmistelut Herokua varten + SQLite/PostgreSql valinta
-         */
-        // asetetaan portti jos heroku antaa PORT-ympäristömuuttujan
+         * asetetaan portti jos heroku antaa PORT-ympäristömuuttujan
+         */        
         if (System.getenv("PORT") != null) {
             port(Integer.valueOf(System.getenv("PORT")));
         }
@@ -68,8 +72,6 @@ public class Main {
             alueDao.insertNewInstance(uusiAlue);
             res.redirect("/");
             return null;
-//            return "<meta http-equiv=\"refresh\" content=\"0; url=/\">";
-
         });
 
         /*
@@ -129,7 +131,6 @@ public class Main {
             String paluuOsoite = "/alue/" + alue.getId() + "/" + lankaDao.getMaxId() + "?sivu=0";
             res.redirect(paluuOsoite);
             return null;
-//            return "<meta http-equiv=\"refresh\" content=\"0; url=" + paluuOsoite + "\">";
         });
 
         /*
@@ -183,7 +184,7 @@ public class Main {
             int lankaId = Integer.parseInt(req.params("id"));
             String nimimerkki = req.queryParams("nimimerkki");
             String sisalto = req.queryParams("sisalto");
-            sisalto = html2text(sisalto);
+            sisalto = stripHtml(sisalto);
 
             Lanka lanka = lankaDao.findOne(lankaId);
             Alue alue = lanka.getAlue();
@@ -202,10 +203,8 @@ public class Main {
             viestiDao.insertNewInstance(uusiViesti);
 
             String paluuOsoite = "/alue/" + alue.getId() + "/" + lanka.getId() + "?sivu=0";
-            res.redirect(paluuOsoite);
+            res.redirect(paluuOsoite);            
             return null;
-//            return "<meta http-equiv=\"refresh\" content=\"0; url=" + paluuOsoite + "\">";
-
         });
 
         /*
@@ -229,7 +228,7 @@ public class Main {
 
     }
 
-    public static String html2text(String html) {
+    public static String stripHtml(String html) {
         return Jsoup.parse(html).text();
     }
 
