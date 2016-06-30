@@ -79,7 +79,7 @@ public class Database {
 //        lista.add("DROP TABLE Kayttaja;");
         
         lista.add("CREATE TABLE Kayttaja "
-                + "(id varchar(20) serial PRIMARY KEY);");
+                + "(id varchar(20) PRIMARY KEY);");
         
         lista.add("CREATE TABLE Alue "
                 + "("
