@@ -17,7 +17,7 @@ public class LankaDao implements Dao<Lanka, Integer> {
 
     public int getMaxId() throws SQLException {
         Connection connection = database.getConnection();
-        String query = "SELECT max(id) FROM Lanka";
+        String query = "SELECT max(id) FROM Lanka;";
 
         PreparedStatement stmt = connection.prepareStatement(query);
 
@@ -41,7 +41,7 @@ public class LankaDao implements Dao<Lanka, Integer> {
     public Lanka findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
 
-        String query = "SELECT * FROM Lanka WHERE id = ?";
+        String query = "SELECT * FROM Lanka WHERE id = ?;";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setObject(1, key);
 
@@ -68,7 +68,7 @@ public class LankaDao implements Dao<Lanka, Integer> {
     public List<Lanka> findAll() throws SQLException {
         Connection connection = database.getConnection();
 
-        String query = "SELECT * FROM Lanka";
+        String query = "SELECT * FROM Lanka;";
         PreparedStatement stmt = connection.prepareStatement(query);
 
         ResultSet rs = stmt.executeQuery();
@@ -102,7 +102,7 @@ public class LankaDao implements Dao<Lanka, Integer> {
         }
 
         Connection connection = database.getConnection();
-        String query = "SELECT * FROM Lanka WHERE id IN (" + muuttujat + ")";
+        String query = "SELECT * FROM Lanka WHERE id IN (" + muuttujat + ");";
         PreparedStatement stmt = connection.prepareStatement(query);
 
         ResultSet rs = stmt.executeQuery();
@@ -127,7 +127,7 @@ public class LankaDao implements Dao<Lanka, Integer> {
       
     public int findCountOfLankaInAlue(int alueId) throws SQLException {        
         Connection connection = database.getConnection();
-        String query = "SELECT count(*) FROM Lanka WHERE alue_id = ?";
+        String query = "SELECT count(*) FROM Lanka WHERE alue_id = ?;";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setObject(1, alueId);
         
@@ -211,7 +211,7 @@ public class LankaDao implements Dao<Lanka, Integer> {
     }
     
     public List<Lanka> findTenInAlueIdWithOffset(int alueId, int offset) throws SQLException {
-        String query = "SELECT * FROM Lanka WHERE alue_id = ? ORDER BY viimeisin_aika DESC LIMIT 10 OFFSET ?";
+        String query = "SELECT * FROM Lanka WHERE alue_id = ? ORDER BY viimeisin_aika DESC LIMIT 10 OFFSET ?;";
         Object[] params = {alueId, offset * 10};
         
         return findAllWithQueryAndParams(query, params);
@@ -219,7 +219,7 @@ public class LankaDao implements Dao<Lanka, Integer> {
 
     public List<Lanka> findAllWithAlueId(Integer key) throws SQLException {
         Connection connection = database.getConnection();
-        String query = "SELECT * FROM Lanka WHERE alue_id = ? ORDER BY viimeisin_aika DESC";
+        String query = "SELECT * FROM Lanka WHERE alue_id = ? ORDER BY viimeisin_aika DESC;";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setObject(1, key);
 
@@ -246,7 +246,7 @@ public class LankaDao implements Dao<Lanka, Integer> {
     public void delete(Integer key) throws SQLException {
         Connection connection = database.getConnection();
 
-        String query = "DELETE FROM Lanka WHERE id = ?";
+        String query = "DELETE FROM Lanka WHERE id = ?;";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setObject(1, key);
 
@@ -272,27 +272,27 @@ public class LankaDao implements Dao<Lanka, Integer> {
     }
 
     public void insertNewLanka(Lanka lanka) throws SQLException {
-        String updateQuery = "INSERT INTO Lanka (lankanimi, alue_id, lankaviestimaara, viimeisin_aika) VALUES (?, ?, ?, ?)";
+        String updateQuery = "INSERT INTO Lanka (lankanimi, alue_id, lankaviestimaara, viimeisin_aika) VALUES (?, ?, ?, ?);";
         Object[] params = {lanka.getLankanimi(), lanka.getAlue().getId(), lanka.getLankaviestimaara(), lanka.getViimeisinAika()};
         update(updateQuery, params);
     }
 
     public void updateLanka(Lanka lanka) throws SQLException {
-        String updateQuery = "UPDATE Lanka SET lankaviestimaara = ?, viimeisin_aika = ? WHERE id = ?";
+        String updateQuery = "UPDATE Lanka SET lankaviestimaara = ?, viimeisin_aika = ? WHERE id = ?;";
         Object[] params = {lanka.getLankaviestimaara(), lanka.getViimeisinAika(), lanka.getId()};
         update(updateQuery, params);
     }
 
     @Override
     public void insertNewInstance(Lanka lanka) throws SQLException {
-        String updateQuery = "INSERT INTO Lanka (lankanimi, alue_id, lankaviestimaara, viimeisin_aika) VALUES (?, ?, ?, ?)";
+        String updateQuery = "INSERT INTO Lanka (lankanimi, alue_id, lankaviestimaara, viimeisin_aika) VALUES (?, ?, ?, ?);";
         Object[] params = {lanka.getLankanimi(), lanka.getAlue().getId(), lanka.getLankaviestimaara(), lanka.getViimeisinAika()};
         update(updateQuery, params);
     }
 
     @Override
     public void updateInstance(Lanka lanka) throws SQLException {
-        String updateQuery = "UPDATE Lanka SET lankaviestimaara = ?, viimeisin_aika = ? WHERE id = ?";
+        String updateQuery = "UPDATE Lanka SET lankaviestimaara = ?, viimeisin_aika = ? WHERE id = ?;";
         Object[] params = {lanka.getLankaviestimaara(), lanka.getViimeisinAika(), lanka.getId()};
         update(updateQuery, params);
     }

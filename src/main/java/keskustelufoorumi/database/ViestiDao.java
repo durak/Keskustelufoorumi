@@ -19,7 +19,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
     public int getMaxId() throws SQLException {
         Connection connection = database.getConnection();
-        String query = "SELECT max(id) FROM Viesti";
+        String query = "SELECT max(id) FROM Viesti;";
 
         PreparedStatement stmt = connection.prepareStatement(query);
 
@@ -43,7 +43,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     public Viesti findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
 
-        String query = "SELECT * FROM Viesti WHERE id = ?";
+        String query = "SELECT * FROM Viesti WHERE id = ?;";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setObject(1, key);
 
@@ -72,7 +72,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     public List<Viesti> findAll() throws SQLException {
         Connection connection = database.getConnection();
 
-        String query = "SELECT * FROM Viesti";
+        String query = "SELECT * FROM Viesti;";
         PreparedStatement stmt = connection.prepareStatement(query);
 
         ResultSet rs = stmt.executeQuery();
@@ -107,7 +107,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         }
 
         Connection connection = database.getConnection();
-        String query = "SELECT * FROM Viesti WHERE id IN (" + muuttujat + ")";
+        String query = "SELECT * FROM Viesti WHERE id IN (" + muuttujat + ");";
         PreparedStatement stmt = connection.prepareStatement(query);
 
         ResultSet rs = stmt.executeQuery();
@@ -133,7 +133,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     public List<Viesti> findAllWithLankaId(Integer key) throws SQLException {
 
         Connection connection = database.getConnection();
-        String query = "SELECT * FROM Viesti WHERE lanka_id = ?";
+        String query = "SELECT * FROM Viesti WHERE lanka_id = ?;";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setObject(1, key);
 
@@ -158,7 +158,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     }
 
     public List<Viesti> find15WithLankaId(int lankaId, int offset) throws SQLException {
-        String query = "SELECT * FROM Viesti WHERE lanka_id = ? ORDER BY lahetysaika ASC LIMIT 15 OFFSET ?";
+        String query = "SELECT * FROM Viesti WHERE lanka_id = ? ORDER BY lahetysaika ASC LIMIT 15 OFFSET ?;";
         Object[] params = {lankaId, offset * 15};
 
         return findAllWithQueryAndParams(query, params);
@@ -193,7 +193,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
     public int findCountOfViestiInLanka(int lankaId) throws SQLException {
         Connection connection = database.getConnection();
-        String query = "SELECT count(*) FROM Viesti WHERE lanka_id = ?";
+        String query = "SELECT count(*) FROM Viesti WHERE lanka_id = ?;";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setObject(1, lankaId);
 
@@ -216,7 +216,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     public List<Viesti> findAllWithUserId(String userId) throws SQLException {
 
         Connection connection = database.getConnection();
-        String query = "SELECT * FROM Viesti WHERE kayttaja_id = ?";
+        String query = "SELECT * FROM Viesti WHERE kayttaja_id = ?;";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setObject(1, userId);
 
@@ -244,7 +244,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     public void delete(Integer key) throws SQLException {
         Connection connection = database.getConnection();
 
-        String query = "DELETE FROM Viesti WHERE id = ?";
+        String query = "DELETE FROM Viesti WHERE id = ?;";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setObject(1, key);
 
@@ -270,14 +270,14 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     }
 
     public void insertNewViesti(Viesti viesti) throws SQLException {
-        String updateQuery = "INSERT INTO Viesti (sisalto, kayttaja_id, lanka_id, lahetysaika) VALUES (?, ?, ?, ?)";
+        String updateQuery = "INSERT INTO Viesti (sisalto, kayttaja_id, lanka_id, lahetysaika) VALUES (?, ?, ?, ?);";
         Object[] params = {viesti.getSisalto(), viesti.getKayttaja().getId(), viesti.getLanka().getId(), viesti.getLahetysaika()};
         update(updateQuery, params);
     }
 
     @Override
     public void insertNewInstance(Viesti viesti) throws SQLException {
-        String updateQuery = "INSERT INTO Viesti (sisalto, kayttaja_id, lanka_id, lahetysaika) VALUES (?, ?, ?, ?)";
+        String updateQuery = "INSERT INTO Viesti (sisalto, kayttaja_id, lanka_id, lahetysaika) VALUES (?, ?, ?, ?);";
         Object[] params = {viesti.getSisalto(), viesti.getKayttaja().getId(), viesti.getLanka().getId(), viesti.getLahetysaika()};
         update(updateQuery, params);
     }

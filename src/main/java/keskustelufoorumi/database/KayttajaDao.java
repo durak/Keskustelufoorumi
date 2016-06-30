@@ -17,7 +17,7 @@ public class KayttajaDao implements Dao<Kayttaja, String> {
     public Kayttaja findOne(String key) throws SQLException {
         Connection connection = database.getConnection();
 
-        String query = "SELECT * FROM Kayttaja WHERE id = ?";
+        String query = "SELECT * FROM Kayttaja WHERE id = ?;";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setObject(1, key);
 
@@ -42,7 +42,7 @@ public class KayttajaDao implements Dao<Kayttaja, String> {
     public List<Kayttaja> findAll() throws SQLException {
         Connection connection = database.getConnection();
 
-        String query = "SELECT * FROM Kayttaja";
+        String query = "SELECT * FROM Kayttaja;";
         PreparedStatement stmt = connection.prepareStatement(query);
 
         ResultSet rs = stmt.executeQuery();
@@ -74,7 +74,7 @@ public class KayttajaDao implements Dao<Kayttaja, String> {
             muuttujat.append(", ?");
         }
 
-        String query = "SELECT * FROM Kayttaja WHERE id IN (" + muuttujat + ")";
+        String query = "SELECT * FROM Kayttaja WHERE id IN (" + muuttujat + ");";
         PreparedStatement stmt = connection.prepareStatement(query);
 
         int laskuri = 1;
@@ -103,7 +103,7 @@ public class KayttajaDao implements Dao<Kayttaja, String> {
     public void delete(String key) throws SQLException {
         Connection connection = database.getConnection();
 
-        String query = "DELETE FROM Kayttaja WHERE id = ?";
+        String query = "DELETE FROM Kayttaja WHERE id = ?;";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setObject(1, key);
 
@@ -136,7 +136,7 @@ public class KayttajaDao implements Dao<Kayttaja, String> {
     }
 
     public void insertNewKayttaja(Kayttaja kayttaja) throws SQLException {
-        String updateQuery = "INSERT INTO Kayttaja VALUES (?)";
+        String updateQuery = "INSERT INTO Kayttaja VALUES (?);";
         String[] params = {kayttaja.getId()};
         update(updateQuery, params);
     }
@@ -148,7 +148,7 @@ public class KayttajaDao implements Dao<Kayttaja, String> {
 
     @Override
     public void insertNewInstance(Kayttaja kayttaja) throws SQLException {
-        String updateQuery = "INSERT INTO Kayttaja VALUES (?)";
+        String updateQuery = "INSERT INTO Kayttaja VALUES (?);";
         String[] params = {kayttaja.getId()};
         update(updateQuery, params);
     }

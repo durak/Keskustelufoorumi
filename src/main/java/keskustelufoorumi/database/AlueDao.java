@@ -15,7 +15,7 @@ public class AlueDao implements Dao<Alue, Integer> {
 
     public int getMaxId() throws SQLException {
         Connection connection = database.getConnection();
-        String query = "SELECT max(id) FROM Alue";
+        String query = "SELECT max(id) FROM Alue;";
 
         PreparedStatement stmt = connection.prepareStatement(query);
 
@@ -66,7 +66,7 @@ public class AlueDao implements Dao<Alue, Integer> {
     public List<Alue> findAll() throws SQLException {
         Connection connection = database.getConnection();
 
-        String query = "SELECT * FROM Alue";
+        String query = "SELECT * FROM Alue;";
         PreparedStatement stmt = connection.prepareStatement(query);
 
         ResultSet rs = stmt.executeQuery();
@@ -99,7 +99,7 @@ public class AlueDao implements Dao<Alue, Integer> {
         }
 
         Connection connection = database.getConnection();
-        String query = "SELECT * FROM Alue WHERE id IN (" + muuttujat + ")";
+        String query = "SELECT * FROM Alue WHERE id IN (" + muuttujat + ");";
         PreparedStatement stmt = connection.prepareStatement(query);
 
         int laskuri = 1;
@@ -135,7 +135,7 @@ public class AlueDao implements Dao<Alue, Integer> {
     public void delete(Integer key) throws SQLException {
         Connection connection = database.getConnection();
 
-        String query = "DELETE FROM Alue WHERE aluenimi = ?";
+        String query = "DELETE FROM Alue WHERE aluenimi = ?;";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setObject(1, key);
 
@@ -161,27 +161,27 @@ public class AlueDao implements Dao<Alue, Integer> {
     }
 
     public void insertNewAlue(Alue alue) throws SQLException {
-        String updateQuery = "INSERT INTO Alue (aluenimi, alueviestimaara, viimeisin_aika) VALUES (?, ?, ?)";
+        String updateQuery = "INSERT INTO Alue (aluenimi, alueviestimaara, viimeisin_aika) VALUES (?, ?, ?);";
         Object[] params = {alue.getAluenimi(), alue.getAlueviestimaara(), alue.getViimeisinAika()};
         update(updateQuery, params);
     }
 
     public void updateAlue(Alue alue) throws SQLException {
-        String updateQuery = "UPDATE Alue SET alueviestimaara = ?, viimeisin_aika = ? WHERE id = ?";
+        String updateQuery = "UPDATE Alue SET alueviestimaara = ?, viimeisin_aika = ? WHERE id = ?;";
         Object[] params = {alue.getAlueviestimaara(), alue.getViimeisinAika(), alue.getId()};
         update(updateQuery, params);
     }
 
     @Override
     public void insertNewInstance(Alue alue) throws SQLException {
-        String updateQuery = "INSERT INTO Alue (aluenimi, alueviestimaara, viimeisin_aika) VALUES (?, ?, ?)";
+        String updateQuery = "INSERT INTO Alue (aluenimi, alueviestimaara, viimeisin_aika) VALUES (?, ?, ?);";
         Object[] params = {alue.getAluenimi(), alue.getAlueviestimaara(), alue.getViimeisinAika()};
         update(updateQuery, params);
     }
 
     @Override
     public void updateInstance(Alue alue) throws SQLException {
-        String updateQuery = "UPDATE Alue SET alueviestimaara = ?, viimeisin_aika = ? WHERE id = ?";
+        String updateQuery = "UPDATE Alue SET alueviestimaara = ?, viimeisin_aika = ? WHERE id = ?;";
         Object[] params = {alue.getAlueviestimaara(), alue.getViimeisinAika(), alue.getId()};
         update(updateQuery, params);
     }
