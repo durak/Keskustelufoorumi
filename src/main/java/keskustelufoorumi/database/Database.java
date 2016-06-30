@@ -74,11 +74,11 @@ public class Database {
 
         // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
         lista.add("CREATE TABLE Kayttaja "
-                + "(id varchar(20) PRIMARY KEY);");
+                + "(id varchar(20) serial PRIMARY KEY);");
         
         lista.add("CREATE TABLE Alue "
                 + "("
-                + "id integer PRIMARY KEY,"
+                + "id integer serial PRIMARY KEY,"
                 + "aluenimi varchar(20),"
                 + "viimeisin_aika timestamp NOT NULL,"
                 + "alueviestimaara integer NOT NULL"
@@ -86,7 +86,7 @@ public class Database {
         
         lista.add("CREATE TABLE Lanka "
                 + "("
-                + "id integer PRIMARY KEY,"
+                + "id integer serial PRIMARY KEY,"
                 + "lankanimi varchar(40) NOT NULL,"
                 + "alue_id integer NOT NULL,"
                 + "lankaviestimaara integer NOT NULL,"
@@ -96,7 +96,7 @@ public class Database {
         
         lista.add("CREATE TABLE Viesti "
                 + "("
-                + "id integer PRIMARY KEY,"
+                + "id integer serial PRIMARY KEY,"
                 + "sisalto varchar(140),"
                 + "kayttaja_id varchar(20) NOT NULL,"
                 + "lanka_id integer NOT NULL,"
