@@ -29,7 +29,23 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        Database database = new Database();
+        /*
+         * Valmistelut Herokua varten + SQLite/PostgreSql valinta
+         */
+        // asetetaan portti jos heroku antaa PORT-ympäristömuuttujan
+        if (System.getenv("PORT") != null) {
+            port(Integer.valueOf(System.getenv("PORT")));
+        }
+
+        String jdbcOsoite = "jdbc:sqlite:forum.db";
+        if (System.getenv("DATABASE_URL") != null) {
+            jdbcOsoite = System.getenv("DATABASE_URL");
+        }
+
+        /*
+         * Alustetaan oliot
+         */
+        Database database = new Database(jdbcOsoite);
         DaoManager daoManager = new DaoManager(database);
         AlueDao alueDao = daoManager.getAlueDao();
         LankaDao lankaDao = daoManager.getLankaDao();
@@ -53,9 +69,9 @@ public class Main {
             res.redirect("/");
             return null;
 //            return "<meta http-equiv=\"refresh\" content=\"0; url=/\">";
-        
+
         });
-        
+
         /*
          * Valitun alueen langat
          */
@@ -83,8 +99,20 @@ public class Main {
         }, new ThymeleafTemplateEngine());
 
         before("/alue/:id", (req, res) -> {
+            boolean error = false;
+
             int alueId = Integer.parseInt(req.params("id"));
+
             if (alueDao.findOne(alueId) == null) {
+                error = true;
+            }
+            try {
+                int sivu = Integer.parseInt(req.queryParams("sivu"));
+            } catch (Exception e) {
+                error = true;
+            }
+
+            if (error) {
                 halt(404, "Aluetta ei löytynyt");
             }
         });
@@ -133,8 +161,18 @@ public class Main {
         }, new ThymeleafTemplateEngine());
 
         before("/alue/:alue.id/:id", (req, res) -> {
+            boolean error = false;
             int lankaId = Integer.parseInt(req.params("id"));
             if (lankaDao.findOne(lankaId) == null) {
+                error = true;                
+            }
+            try {
+                int sivu = Integer.parseInt(req.queryParams("sivu"));
+            } catch (Exception e) {
+                error = true;
+            }
+            
+            if (error) {
                 halt(404, "Lankaa ei löytynyt");
             }
         });
@@ -146,7 +184,6 @@ public class Main {
             String nimimerkki = req.queryParams("nimimerkki");
             String sisalto = req.queryParams("sisalto");
             sisalto = html2text(sisalto);
-
 
             Lanka lanka = lankaDao.findOne(lankaId);
             Alue alue = lanka.getAlue();
@@ -189,7 +226,6 @@ public class Main {
                 halt(404, "Käyttäjää ei löytynyt");
             }
         });
-
 
     }
 
