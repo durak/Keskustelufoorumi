@@ -1,5 +1,6 @@
 package keskustelufoorumi;
 
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -31,7 +32,9 @@ public class Main {
         Database database = new Database();
         DaoManager daoManager = new DaoManager(database);
 
-//        Spark.staticFileLocation("/public");
+        staticFileLocation("/public");
+//        Spark.externalStaticFileLocation(Paths.get("").toAbsolutePath().toString() + "/src/main/resources/public");
+        
   
         
         /*
