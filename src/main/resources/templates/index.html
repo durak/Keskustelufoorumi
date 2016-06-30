@@ -18,8 +18,8 @@
 
             input[type="submit"] {
                 background: green;
-                border: 1px solid #073BFF;
-                padding: 1px 3px;
+                /*border: 1px solid #073BFF;*/
+                /*padding: 1px 3px;*/
                 font-family: 'Lucida Console', Monaco, monospace;
                 font-size: 14px;
                 font-weight: bold;
@@ -28,25 +28,44 @@
                 color: gray;
             }
 
+            input[type="text"] {
+                background: black;
+                color: grey;
+
+            }
+
             div.page {
                 background: black;
                 border: 1px solid green;
+                -moz-border-radius: 5px;
+                -webkit-border-radius: 5px;
                 width: 700px;
                 margin: 60px auto;
             }
-            
+
             div.page pre {
                 margin: 25px;
                 text-align: center; 
+                color: grey; 
+
+            }
+
+            div.page pre a {
+                text-decoration: none;
                 color: grey;
             }
+
+
             div.page h1 {
-                background: green;
+                font-size: 1.5em;
+                background: black;
+                border: 1px solid green;
                 margin: 0;
-                padding: 10px 14px;
+
+                padding: 10px 14px 10px 14px;
                 color: gray;
                 letter-spacing: 1px;
-                text-shadow: 0 0 3px #2477FF;
+                /*text-shadow: 0 0 3px #2477FF;*/
                 font-weight: normal;
             }
 
@@ -56,14 +75,17 @@
             }
             div.page h2 {
                 /*margin: 0 0 15px 25px;*/                
-                margin: 25px;
-                color: green;
-                <!--text-shadow: 0 1px 2px #ccc;-->
+                /*margin: 25px;*/
+                /*margin: 25px 10px 10px 25px;*/
+                padding: 5px 14px 5px 14px;
+                color: grey;
+                font-weight: normal;
+                /*text-shadow: 0 1px 2px #ccc;*/
             }
 
             div.page ul.messages {
                 list-style: none;
-                margin: 0;
+                margin: 10px;
                 padding: 0;
             }
 
@@ -75,16 +97,25 @@
                 -moz-border-radius: 5px;
                 -webkit-border-radius: 5px;
                 min-height: 48px;
+                overflow-wrap: break-word;
             }
 
             table {
-                width: 670px;
-                background-color: black;
+                background-color: #F0FAFF;
+                /*background-color: #22062e;*/
+
+                width: 680px;                
                 margin-left: auto;
                 margin-right: auto;
                 margin-top: 15px;
+
+
+
+                border: 1px solid #DBF3FF;
+                -moz-border-radius: 5px;
+                -webkit-border-radius: 5px;
             }
-            
+
             table a {
                 color: green;
             }
@@ -98,15 +129,24 @@
             td.left {
                 text-align: left;
                 color: grey;
-                
+
             }
             th.left {
                 text-align: left;
             }
 
             p {
-                margin: 10px 10px 10px 25px;
+                /*margin: 10px 10px 10px 0px;*/
+                padding: 5px 14px 5px 14px;
             }
+            p a {
+                color: green;
+            }
+
+            p.right {
+                text-align: right;
+            }
+
 
         </style>
 
@@ -116,7 +156,8 @@
 
     <body>
         <div class="page">
-            <pre>            
+            <pre>  
+            <a th:href="${'/'}">                      
   __  __          __                           __  _______   _______   _______ 
  |__||  | ______ |__|.---.-. ______ .--------.|__||   _   \ |   _   \ |   _   |
  |  ||  ||______||  ||  _  ||______||        ||  ||.  1   / |.  1   / |   1___|
@@ -124,8 +165,9 @@
                 |___|                             |:  1    \|:  1    \|:  1   |
                                                   |::.. .  /|::.. .  /|::.. . |
                                                   `-------' `-------' `-------'
-                                                                                                                                       
+            </a>                                                  
             </pre>
+
             <h1>Alueet</h1>            
 
             <table>
@@ -152,10 +194,10 @@
 
 
 
-            <h2> Luo uusi keskustelualue </h2>
+            <!--<h2>uusi keskustelualue</h2>-->
             <form method="POST" action="/">                        
-                <p>Keskustelualueen nimi</p>
-                <p><input type="text" name="aluenimi" maxlength="20"/></p>
+                <!--<p>Keskustelualueen nimi</p>-->
+                <p><input type="text" name="aluenimi" maxlength="20" placeholder="syota nimi"/></p>
                 <p><input type="submit" value="Luo"/></p>
             </form>
         </div>

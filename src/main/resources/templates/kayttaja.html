@@ -9,49 +9,78 @@
                 overflow-y: scroll;
             }
             body {
-                background: #CAECFF;
-                font-family: 'Trebuchet MS', sans-serif;
+                background: black;
+                font-family: 'Lucida Console', Monaco, monospace;
                 font-size: 14px;
+                color: grey;
 
             }
 
             input[type="submit"] {
-                background: #1057FF;
-                border: 1px solid #073BFF;
-                padding: 1px 3px;
-                font-family: 'Trebuchet MS', sans-serif;
+                background: green;
+                /*border: 1px solid #073BFF;*/
+                /*padding: 1px 3px;*/
+                font-family: 'Lucida Console', Monaco, monospace;
                 font-size: 14px;
                 font-weight: bold;
                 -moz-border-radius: 2px;
                 -webkit-border-radius: 2px;
-                color: white;
+                color: gray;
+            }
+
+            input[type="text"] {
+                background: black;
+                color: grey;
+
             }
 
             div.page {
-                background: white;
-                border: 1px solid #6ECCFF;
+                background: black;
+                border: 1px solid green;
+                -moz-border-radius: 5px;
+                -webkit-border-radius: 5px;
                 width: 700px;
                 margin: 60px auto;
             }
+
+            div.page pre {
+                margin: 25px;
+                text-align: center; 
+                color: grey; 
+
+            }
+
+            div.page pre a {
+                text-decoration: none;
+                color: grey;
+            }
+
+
             div.page h1 {
-                background: #6ECCFF;
+                font-size: 1.5em;
+                background: black;
+                border: 1px solid green;
                 margin: 0;
-                padding: 10px 14px;
-                color: white;
+
+                padding: 10px 14px 10px 14px;
+                color: gray;
                 letter-spacing: 1px;
-                text-shadow: 0 0 3px #2477FF;
+                /*text-shadow: 0 0 3px #2477FF;*/
                 font-weight: normal;
             }
 
             div.page h1 a {
                 text-decoration: none;
-                color: white;
+                color: gray;
             }
-
             div.page h2 {
-                margin: 0 0 15px 25px;
-                color: #1057FF;
-                text-shadow: 0 1px 2px #ccc;
+                /*margin: 0 0 15px 25px;*/                
+                /*margin: 25px;*/
+                /*margin: 25px 10px 10px 25px;*/
+                padding: 5px 14px 5px 14px;
+                color: grey;
+                font-weight: normal;
+                /*text-shadow: 0 1px 2px #ccc;*/
             }
 
             div.page ul.messages {
@@ -71,15 +100,24 @@
                 overflow-wrap: break-word;
             }
 
-            div.page ul.messages li small {
-                font-size: 0.9em;
-                color: #888;                
-
-            }
-
             table {
                 background-color: #F0FAFF;
-                margin: 25px 25px 25px 25px;
+                /*background-color: #22062e;*/
+
+                width: 680px;                
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 15px;
+
+
+
+                border: 1px solid #DBF3FF;
+                -moz-border-radius: 5px;
+                -webkit-border-radius: 5px;
+            }
+
+            table a {
+                color: green;
             }
 
             td.center {
@@ -90,6 +128,7 @@
             }
             td.left {
                 text-align: left;
+                color: grey;
 
             }
             th.left {
@@ -97,14 +136,34 @@
             }
 
             p {
-                margin: 10px 10px 10px 25px;
+                /*margin: 10px 10px 10px 0px;*/
+                padding: 5px 14px 5px 14px;
             }
+            p a {
+                color: green;
+            }
+
+            p.right {
+                text-align: right;
+            }
+
 
         </style>
     </head>
 
     <body>
         <div class="page">
+            <pre>  
+            <a th:href="${'/'}">                      
+  __  __          __                           __  _______   _______   _______ 
+ |__||  | ______ |__|.---.-. ______ .--------.|__||   _   \ |   _   \ |   _   |
+ |  ||  ||______||  ||  _  ||______||        ||  ||.  1   / |.  1   / |   1___|
+ |__||__|        |  ||___._|        |__|__|__||__||.  _   \ |.  _   \ |____   |
+                |___|                             |:  1    \|:  1    \|:  1   |
+                                                  |::.. .  /|::.. .  /|::.. . |
+                                                  `-------' `-------' `-------'
+            </a>                                                  
+            </pre>
             <h1>
                 <span th:text="${kayttaja.id}"></span>
                 viestihistoria
