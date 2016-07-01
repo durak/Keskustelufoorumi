@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
     <head>
-        <title>Käyttäjä</title>
+        <title>Kayttaja</title>
         <meta charset="utf-8" />
         <style>
             html {
@@ -12,26 +12,17 @@
                 background: #CAECFF;
                 font-family: 'Trebuchet MS', sans-serif;
                 font-size: 14px;
-                /*background: black;
-                font-family: 'Lucida Console', Monaco, monospace;
-                color: grey;*/
-
             }
 
             input[type="submit"] {
                 background: #1057FF;
-                /*background: green;*/
-                /*border: 1px solid #073BFF;*/
-                /*padding: 1px 3px;*/
                 font-family: 'Trebuchet MS', sans-serif;
                 font-size: 14px;
-                /*font-family: 'Lucida Console', Monaco, monospace;*/
                 font-size: 14px;
                 font-weight: bold;
                 -moz-border-radius: 2px;
                 -webkit-border-radius: 2px;
                 color: white;
-                /*color: gray;*/
             }
 
             textarea {
@@ -39,17 +30,9 @@
                 height: 48px;
             }
 
-            /*            input[type="text"] {
-                            background: black;
-                            color: grey;
-            
-                        }*/
-
             div.page {
                 background: white;
                 border: 1px solid #6ECCFF;
-                /*background: black;
-                border: 1px solid green;*/
                 -moz-border-radius: 5px;
                 -webkit-border-radius: 5px;
                 width: 700px;
@@ -57,16 +40,12 @@
             }
 
             div.page pre {
-                /*margin: 25px;*/
                 text-align: center; 
-                /*color: grey;*/ 
                 background: #6ECCFF;
-                /*background: #F0FAFF;*/
                 margin: 10px;
                 border: 1px solid #DBF3FF;
                 -moz-border-radius: 5px;
                 -webkit-border-radius: 5px;
-
             }
 
             div.page pre a {
@@ -74,19 +53,14 @@
                 color: white;
             }
 
-
             div.page h1 {
                 font-size: 1.5em;
                 background: #6ECCFF;
-                /*background: black;*/
-                /*border: 1px solid green;*/
                 margin: 10px;
                 border: 1px solid #DBF3FF;
                 -moz-border-radius: 5px;
                 -webkit-border-radius: 5px;
-
                 padding: 10px 14px 10px 14px;
-                /*color: gray;*/
                 color: white;
                 letter-spacing: 1px;
                 text-shadow: 0 0 3px #2477FF;
@@ -96,15 +70,10 @@
             div.page h1 a {
                 text-decoration: none;
                 color: white;
-                /*color: gray;*/
             }
             div.page h2 {
-                /*margin: 0 0 15px 25px;*/                
-                /*margin: 25px;*/
-                /*margin: 25px 10px 10px 25px;*/
                 padding: 5px 14px 0px 14px;
                 color: #1057FF;
-                /*color: grey;*/
                 font-weight: normal;
                 text-shadow: 0 1px 2px #ccc;
             }
@@ -128,23 +97,14 @@
 
             table {
                 background-color: #F0FAFF;
-                /*background-color: #22062e;*/
-
                 width: 680px;                
                 margin-left: auto;
                 margin-right: auto;
                 margin-top: 15px;
-
-
-
                 border: 1px solid #DBF3FF;
                 -moz-border-radius: 5px;
                 -webkit-border-radius: 5px;
             }
-
-            /*            table a {
-                            color: green;
-                        }*/
 
             td.center {
                 text-align: center;
@@ -154,20 +114,13 @@
             }
             td.left {
                 text-align: left;
-                /*                color: grey;*/
-
             }
             th.left {
                 text-align: left;
             }
 
             p {
-                /*margin: 10px 10px 10px 0px;*/
                 padding: 5px 14px 5px 14px;
-            }
-            p a {
-                /*color: green;*/
-
             }
 
             p.right {
@@ -193,7 +146,7 @@
             </pre>
             <h1>
                 <span th:text="${kayttaja.id}"></span>
-                viestihistoria
+                <span>viestihistoria</span>
             </h1>
             <ul class="messages">            
                 <li th:each="viesti: ${viestit}">
