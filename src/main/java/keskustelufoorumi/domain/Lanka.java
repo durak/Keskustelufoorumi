@@ -71,6 +71,11 @@ public class Lanka {
 
     public void setViimeisinAika(Timestamp viimeisinAika) {
         this.viimeisinAika = viimeisinAika;
+        if (!viimeisinAika.equals(new Timestamp(0))) {
+            this.viimeisinAikaFormatted = new SimpleDateFormat("yyyy-MM-dd @ HH:mm").format(viimeisinAika);
+        } else {
+            this.viimeisinAikaFormatted = "-";
+        }
     }
 
     public void lisaaLankaviestimaaraa() {

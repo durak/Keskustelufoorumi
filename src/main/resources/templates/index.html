@@ -8,35 +8,48 @@
             html {
                 overflow-y: scroll;
             }
-            body {
-                background: black;
-                font-family: 'Lucida Console', Monaco, monospace;
+            body {                
+                background: #CAECFF;
+                font-family: 'Trebuchet MS', sans-serif;
                 font-size: 14px;
-                color: grey;
+                /*background: black;
+                font-family: 'Lucida Console', Monaco, monospace;
+                color: grey;*/
 
             }
 
             input[type="submit"] {
-                background: green;
+                background: #1057FF;
+                /*background: green;*/
                 /*border: 1px solid #073BFF;*/
                 /*padding: 1px 3px;*/
-                font-family: 'Lucida Console', Monaco, monospace;
+                font-family: 'Trebuchet MS', sans-serif;
+                font-size: 14px;
+                /*font-family: 'Lucida Console', Monaco, monospace;*/
                 font-size: 14px;
                 font-weight: bold;
                 -moz-border-radius: 2px;
                 -webkit-border-radius: 2px;
-                color: gray;
+                color: white;
+                /*color: gray;*/
             }
 
-            input[type="text"] {
-                background: black;
-                color: grey;
-
+            textarea {
+                width: 660px;
+                height: 48px;
             }
+
+            /*            input[type="text"] {
+                            background: black;
+                            color: grey;
+            
+                        }*/
 
             div.page {
-                background: black;
-                border: 1px solid green;
+                background: white;
+                border: 1px solid #6ECCFF;
+                /*background: black;
+                border: 1px solid green;*/
                 -moz-border-radius: 5px;
                 -webkit-border-radius: 5px;
                 width: 700px;
@@ -44,43 +57,56 @@
             }
 
             div.page pre {
-                margin: 25px;
+                /*margin: 25px;*/
                 text-align: center; 
-                color: grey; 
+                /*color: grey;*/ 
+                background: #6ECCFF;
+                /*background: #F0FAFF;*/
+                margin: 10px;
+                border: 1px solid #DBF3FF;
+                -moz-border-radius: 5px;
+                -webkit-border-radius: 5px;
 
             }
 
             div.page pre a {
                 text-decoration: none;
-                color: grey;
+                color: white;
             }
 
 
             div.page h1 {
                 font-size: 1.5em;
-                background: black;
-                border: 1px solid green;
-                margin: 0;
+                background: #6ECCFF;
+                /*background: black;*/
+                /*border: 1px solid green;*/
+                margin: 10px;
+                border: 1px solid #DBF3FF;
+                -moz-border-radius: 5px;
+                -webkit-border-radius: 5px;
 
                 padding: 10px 14px 10px 14px;
-                color: gray;
+                /*color: gray;*/
+                color: white;
                 letter-spacing: 1px;
-                /*text-shadow: 0 0 3px #2477FF;*/
+                text-shadow: 0 0 3px #2477FF;
                 font-weight: normal;
             }
 
             div.page h1 a {
                 text-decoration: none;
-                color: gray;
+                color: white;
+                /*color: gray;*/
             }
             div.page h2 {
                 /*margin: 0 0 15px 25px;*/                
                 /*margin: 25px;*/
                 /*margin: 25px 10px 10px 25px;*/
-                padding: 5px 14px 5px 14px;
-                color: grey;
+                padding: 5px 14px 0px 14px;
+                color: #1057FF;
+                /*color: grey;*/
                 font-weight: normal;
-                /*text-shadow: 0 1px 2px #ccc;*/
+                text-shadow: 0 1px 2px #ccc;
             }
 
             div.page ul.messages {
@@ -116,9 +142,9 @@
                 -webkit-border-radius: 5px;
             }
 
-            table a {
-                color: green;
-            }
+            /*            table a {
+                            color: green;
+                        }*/
 
             td.center {
                 text-align: center;
@@ -128,7 +154,7 @@
             }
             td.left {
                 text-align: left;
-                color: grey;
+                /*                color: grey;*/
 
             }
             th.left {
@@ -140,7 +166,8 @@
                 padding: 5px 14px 5px 14px;
             }
             p a {
-                color: green;
+                /*color: green;*/
+
             }
 
             p.right {
@@ -156,6 +183,7 @@
 
     <body>
         <div class="page">
+
             <pre>  
             <a th:href="${'/'}">                      
   __  __          __                           __  _______   _______   _______ 
@@ -167,6 +195,8 @@
                                                   `-------' `-------' `-------'
             </a>                                                  
             </pre>
+
+
 
             <h1>Alueet</h1>            
 
@@ -194,10 +224,10 @@
 
 
 
-            <!--<h2>uusi keskustelualue</h2>-->
+            <h2>Uusi keskustelualue</h2>
             <form method="POST" action="/">                        
                 <!--<p>Keskustelualueen nimi</p>-->
-                <p><input type="text" name="aluenimi" maxlength="20" placeholder="syota nimi"/></p>
+                <p><input type="text" name="aluenimi" required="" maxlength="20" placeholder="syota nimi"/></p>
                 <p><input type="submit" value="Luo"/></p>
             </form>
         </div>

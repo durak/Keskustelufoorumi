@@ -17,17 +17,17 @@ public class Alue {
         this.alueviestimaara = alueviestimaara;
         this.viimeisinAika = viimeisinAika;
         if (!viimeisinAika.equals(new Timestamp(0))) {
-            this.viimeisinAikaFormatted =  new SimpleDateFormat("yyyy-MM-dd @ HH:mm").format(viimeisinAika);
+            this.viimeisinAikaFormatted = new SimpleDateFormat("yyyy-MM-dd @ HH:mm").format(viimeisinAika);
         } else {
             this.viimeisinAikaFormatted = "-";
         }
-        
+
     }
 
-    public Alue(String aluenimi) {        
+    public Alue(String aluenimi) {
         this.aluenimi = aluenimi;
-        this.alueviestimaara = 0;        
-        this.viimeisinAika = new Timestamp(0);        
+        this.alueviestimaara = 0;
+        this.viimeisinAika = new Timestamp(0);
     }
 
     /*
@@ -48,7 +48,7 @@ public class Alue {
     public Timestamp getViimeisinAika() {
         return viimeisinAika;
     }
-    
+
     public String getViimeisinAikaFormatted() {
         return viimeisinAikaFormatted;
     }
@@ -56,17 +56,22 @@ public class Alue {
     /*
     *SETTERIT
      */
-    
     public void setId(int id) {
         this.id = id;
     }
-    
+
     public void lisaaViestimaaraa() {
         this.alueviestimaara++;
     }
 
     public void setViimeisinAika(Timestamp viimeisinAika) {
         this.viimeisinAika = viimeisinAika;
+        if (!viimeisinAika.equals(new Timestamp(0))) {
+            this.viimeisinAikaFormatted = new SimpleDateFormat("yyyy-MM-dd @ HH:mm").format(viimeisinAika);
+        } else {
+            this.viimeisinAikaFormatted = "-";
+        }
+
     }
 
     public void lisaaViesti(Viesti viesti) {
