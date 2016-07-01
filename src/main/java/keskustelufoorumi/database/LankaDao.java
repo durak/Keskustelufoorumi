@@ -1,244 +1,32 @@
 package keskustelufoorumi.database;
 
-import java.util.*;
-import java.sql.*;
-import keskustelufoorumi.domain.Alue;
+import java.sql.SQLException;
+import java.util.Collection;
+import java.util.List;
 import keskustelufoorumi.domain.Lanka;
 
-public class LankaDao implements Dao<Lanka, Integer> {
+public interface LankaDao {
+    
+    // Yhden langan haku taulusta
+    Lanka findOne(int lankaId) throws SQLException;
 
-    private Database database;
-    private AlueDao alueDao;
+    // Lankajouko haku alueelta (joukon koko haettavaLkm), offset siirtää valinnan alkua
+    List<Lanka> findLangatInAlue(int alueId, int haettavaLkm, int offset) throws SQLException;
+    
+    // Lankojen määrä alueella
+    int findCountOfLankaInAlue(int alueId) throws SQLException;
+    
+    // Viimeisin id taulusta
+    int findLatestId() throws SQLException;
+    
+    // Uusi lanka tauluun
+    void insertNewLanka(Lanka lanka) throws SQLException;
+    
+    // Taulussa jo olevan langan tietojen päivitys
+    void updateLanka(Lanka lanka) throws SQLException;
 
-    public LankaDao(Database database, AlueDao alueDao) {
-        this.database = database;
-        this.alueDao = alueDao;
-    }
-
-    public int getMaxId() throws SQLException {
-        Connection connection = database.getConnection();
-        String query = "SELECT max(id) AS max_id FROM Lanka;";
-        PreparedStatement stmt = connection.prepareStatement(query);
-        ResultSet rs = stmt.executeQuery();
-
-        boolean hasOne = rs.next();
-        if (!hasOne) {
-            return -1;
-        }
-
-        int maxId = rs.getInt("max_id");
-
-        rs.close();
-        stmt.close();
-        connection.close();
-
-        return maxId;
-    }
-
-    @Override
-    public Lanka findOne(Integer key) throws SQLException {
-        Connection connection = database.getConnection();
-        String query = "SELECT * FROM Lanka WHERE id = ?;";
-        PreparedStatement stmt = connection.prepareStatement(query);
-        stmt.setObject(1, key);
-        ResultSet rs = stmt.executeQuery();
-
-        boolean hasOne = rs.next();
-        if (!hasOne) {
-            return null;
-        }
-
-        int id = rs.getInt("id");
-        String lankanimi = rs.getString("lankanimi");
-        int alueId = rs.getInt("alue_id");
-        int lankaviestimaara = rs.getInt("lankaviestimaara");
-        Timestamp viimeisinAika = rs.getTimestamp("viimeisin_aika");
-        Lanka l = new Lanka(id, lankanimi, alueDao.findOne(alueId), lankaviestimaara, viimeisinAika);
-
-        rs.close();
-        stmt.close();
-        connection.close();
-
-        return l;
-    }
-
-    @Override
-    public List<Lanka> findAll() throws SQLException {
-        Connection connection = database.getConnection();
-        String query = "SELECT * FROM Lanka;";
-        PreparedStatement stmt = connection.prepareStatement(query);
-        ResultSet rs = stmt.executeQuery();
-        List<Lanka> langat = new ArrayList<>();
-
-        while (rs.next()) {
-            int id = rs.getInt("id");
-            String lankanimi = rs.getString("lankanimi");
-            int lankaviestimaara = rs.getInt("lankaviestimaara");
-            int alueId = rs.getInt("alue_id");
-            Timestamp viimeisinAika = rs.getTimestamp("viimeisin_aika");
-            langat.add(new Lanka(id, lankanimi, alueDao.findOne(alueId), lankaviestimaara, viimeisinAika));
-        }
-
-        rs.close();
-        stmt.close();
-        connection.close();
-
-        return langat;
-    }
-
-    @Override
-    public List<Lanka> findAllIn(Collection<Integer> keys) throws SQLException {
-        if (keys.isEmpty()) {
-            return new ArrayList<>();
-        }
-
-        StringBuilder muuttujat = new StringBuilder("?");
-        for (int i = 0; i < keys.size(); i++) {
-            muuttujat.append(", ?");
-        }
-
-        Connection connection = database.getConnection();
-        String query = "SELECT * FROM Lanka WHERE id IN (" + muuttujat + ");";
-        PreparedStatement stmt = connection.prepareStatement(query);
-        ResultSet rs = stmt.executeQuery();
-        List<Lanka> langat = new ArrayList<>();
-
-        while (rs.next()) {
-            int id = rs.getInt("id");
-            String lankanimi = rs.getString("lankanimi");
-            int lankaviestimaara = rs.getInt("lankaviestimaara");
-            int alueId = rs.getInt("alue_id");
-            Timestamp viimeisinAika = rs.getTimestamp("viimeisin_aika");
-            langat.add(new Lanka(id, lankanimi, alueDao.findOne(alueId), lankaviestimaara, viimeisinAika));
-        }
-
-        rs.close();
-        stmt.close();
-        connection.close();
-
-        return langat;
-    }
-
-    public int findCountOfLankaInAlue(int alueId) throws SQLException {
-        Connection connection = database.getConnection();
-        String query = "SELECT count(*) AS lkm FROM Lanka WHERE alue_id = ?;";
-        PreparedStatement stmt = connection.prepareStatement(query);
-        stmt.setObject(1, alueId);
-        ResultSet rs = stmt.executeQuery();
-
-        boolean hasOne = rs.next();
-        if (!hasOne) {
-            return -1;
-        }
-
-        int count = rs.getInt("lkm");
-
-        rs.close();
-        stmt.close();
-        connection.close();
-
-        return count;
-    }
-
-    private List<Lanka> findAllWithQueryAndParams(String query, Object... params) throws SQLException {
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement(query);
-        for (int i = 0; i < params.length; i++) {
-            stmt.setObject(i + 1, params[i]);
-        }
-
-        ResultSet rs = stmt.executeQuery();
-        List<Lanka> langat = new ArrayList<>();
-
-        while (rs.next()) {
-            int id = rs.getInt("id");
-            String lankanimi = rs.getString("lankanimi");
-            int lankaviestimaara = rs.getInt("lankaviestimaara");
-            int alueId = rs.getInt("alue_id");
-            Timestamp viimeisinAika = rs.getTimestamp("viimeisin_aika");
-            langat.add(new Lanka(id, lankanimi, alueDao.findOne(alueId), lankaviestimaara, viimeisinAika));
-        }
-
-        rs.close();
-        stmt.close();
-        connection.close();
-
-        return langat;
-    }
-
-    public List<Lanka> findTenInAlueIdWithOffset(int alueId, int offset) throws SQLException {
-        String query = "SELECT * FROM Lanka WHERE alue_id = ? ORDER BY viimeisin_aika DESC LIMIT 10 OFFSET ?;";
-        Object[] params = {alueId, offset * 10};
-
-        return findAllWithQueryAndParams(query, params);
-    }
-
-    public List<Lanka> findAllWithAlueId(Integer key) throws SQLException {
-        Connection connection = database.getConnection();
-        String query = "SELECT * FROM Lanka WHERE alue_id = ? ORDER BY viimeisin_aika DESC;";
-        PreparedStatement stmt = connection.prepareStatement(query);
-        stmt.setObject(1, key);
-
-        ResultSet rs = stmt.executeQuery();
-        List<Lanka> langat = new ArrayList<>();
-
-        while (rs.next()) {
-            int id = rs.getInt("id");
-            String lankanimi = rs.getString("lankanimi");
-            int lankaviestimaara = rs.getInt("lankaviestimaara");
-            int alueId = rs.getInt("alue_id");
-            Timestamp viimeisinAika = rs.getTimestamp("viimeisin_aika");
-            langat.add(new Lanka(id, lankanimi, alueDao.findOne(alueId), lankaviestimaara, viimeisinAika));
-        }
-
-        rs.close();
-        stmt.close();
-        connection.close();
-
-        return langat;
-    }
-
-    @Override
-    public void delete(Integer key) throws SQLException {
-        Connection connection = database.getConnection();
-
-        String query = "DELETE FROM Lanka WHERE id = ?;";
-        PreparedStatement stmt = connection.prepareStatement(query);
-        stmt.setObject(1, key);
-
-        stmt.executeUpdate();
-
-        stmt.close();
-        connection.close();
-    }
-
-    @Override
-    public void update(String updateQuery, Object... params) throws SQLException {
-        Connection connection = database.getConnection();
-        PreparedStatement stmt = connection.prepareStatement(updateQuery);
-
-        for (int i = 0; i < params.length; i++) {
-            stmt.setObject(i + 1, params[i]);
-        }
-
-        stmt.executeUpdate();
-
-        stmt.close();
-        connection.close();
-    }
-
-    @Override
-    public void insertNewInstance(Lanka lanka) throws SQLException {
-        String updateQuery = "INSERT INTO Lanka (lankanimi, alue_id, lankaviestimaara, viimeisin_aika) VALUES (?, ?, ?, ?);";
-        Object[] params = {lanka.getLankanimi(), lanka.getAlue().getId(), lanka.getLankaviestimaara(), lanka.getViimeisinAika()};
-        update(updateQuery, params);
-    }
-
-    @Override
-    public void updateInstance(Lanka lanka) throws SQLException {
-        String updateQuery = "UPDATE Lanka SET lankaviestimaara = ?, viimeisin_aika = ? WHERE id = ?;";
-        Object[] params = {lanka.getLankaviestimaara(), lanka.getViimeisinAika(), lanka.getId()};
-        update(updateQuery, params);
-    }
-
+//    List<Lanka> findAllIn(Collection<Integer> keys) throws SQLException;
+//    void delete(Integer key) throws SQLException;
+//    List<Lanka> findAllWithAlueId(Integer alueId) throws SQLException;    
+//    List<Lanka> findAll() throws SQLException;
 }

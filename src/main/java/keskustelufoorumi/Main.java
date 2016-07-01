@@ -5,9 +5,9 @@ import java.util.Map;
 import keskustelufoorumi.database.AlueDao;
 import keskustelufoorumi.database.DaoManager;
 import keskustelufoorumi.database.Database;
-import keskustelufoorumi.database.KayttajaDao;
-import keskustelufoorumi.database.LankaDao;
-import keskustelufoorumi.database.ViestiDao;
+import keskustelufoorumi.database.sql.SqlKayttajaDao;
+import keskustelufoorumi.database.sql.SqlLankaDao;
+import keskustelufoorumi.database.sql.SqlViestiDao;
 import keskustelufoorumi.domain.Alue;
 import keskustelufoorumi.domain.Kayttaja;
 import keskustelufoorumi.domain.Lanka;
@@ -40,9 +40,9 @@ public class Main {
         Database database = new Database(jdbcOsoite);
         DaoManager daoManager = new DaoManager(database);
         AlueDao alueDao = daoManager.getAlueDao();
-        LankaDao lankaDao = daoManager.getLankaDao();
-        ViestiDao viestiDao = daoManager.getViestiDao();
-        KayttajaDao kayttajaDao = daoManager.getKayttajaDao();
+        SqlLankaDao lankaDao = daoManager.getLankaDao();
+        SqlViestiDao viestiDao = daoManager.getViestiDao();
+        SqlKayttajaDao kayttajaDao = daoManager.getKayttajaDao();
 
         /*
          * Etusivu / Aluevalikko
@@ -75,12 +75,13 @@ public class Main {
         get("/alue/:id", (req, res) -> {
             int alueId = Integer.parseInt(req.params("id"));
             int sivu = Integer.parseInt(req.queryParams("sivu"));
-
+            int kerrallaNaytetaanLankoja = 10;
+            
             HashMap map = new HashMap<>();
             map.put("alue", alueDao.findOne(alueId));
-            map.put("langat", lankaDao.findTenInAlueIdWithOffset(alueId, sivu));
+            map.put("langat", lankaDao.findLangatInAlue(alueId, kerrallaNaytetaanLankoja, sivu));
 
-            if (lankaDao.findCountOfLankaInAlue(alueId) > (sivu + 1) * 10) {
+            if (lankaDao.findCountOfLankaInAlue(alueId) > (sivu + 1) * kerrallaNaytetaanLankoja) {
                 map.put("seuraava", sivu + 1);
             } else {
                 map.put("seuraava", null);
@@ -127,9 +128,9 @@ public class Main {
 
             Alue alue = alueDao.findOne(alueId);
             Lanka uusiLanka = new Lanka(lankanimi, alue);
-            lankaDao.insertNewInstance(uusiLanka);
+            lankaDao.insertNewLanka(uusiLanka);
 
-            String paluuOsoite = "/alue/" + alue.getId() + "/" + lankaDao.getMaxId() + "?sivu=0";
+            String paluuOsoite = "/alue/" + alue.getId() + "/" + lankaDao.findLatestId() + "?sivu=0";
             res.redirect(paluuOsoite);
             return null;
         });
@@ -141,13 +142,14 @@ public class Main {
             int alueId = Integer.parseInt(req.params("alue.id"));
             int lankaId = Integer.parseInt(req.params("id"));
             int sivu = Integer.parseInt(req.queryParams("sivu"));
+            int kerrallaNaytetaanViesteja = 15;
 
             HashMap map = new HashMap<>();
             map.put("alue", alueDao.findOne(alueId));
             map.put("lanka", lankaDao.findOne(lankaId));
-            map.put("viestit", viestiDao.find15WithLankaId(lankaId, sivu));
+            map.put("viestit", viestiDao.findViestitInLanka(lankaId, kerrallaNaytetaanViesteja, sivu));
 
-            if (viestiDao.findCountOfViestiInLanka(lankaId) > (sivu + 1) * 15) {
+            if (viestiDao.findCountOfViestiInLanka(lankaId) > (sivu + 1) * kerrallaNaytetaanViesteja) {
                 map.put("seuraava", sivu + 1);
             } else {
                 map.put("seuraava", null);
@@ -203,7 +205,7 @@ public class Main {
             Kayttaja kayttaja = kayttajaDao.findOne(nimimerkki);
             if (kayttaja == null) {
                 kayttaja = new Kayttaja(nimimerkki);
-                kayttajaDao.insertNewInstance(kayttaja);
+                kayttajaDao.insertNewKayttaja(kayttaja);
             }
 
             Viesti uusiViesti = new Viesti(sisalto, kayttaja, lanka);
@@ -211,8 +213,8 @@ public class Main {
             alue.lisaaViesti(uusiViesti);
 
             alueDao.updateInstance(alue);
-            lankaDao.updateInstance(lanka);
-            viestiDao.insertNewInstance(uusiViesti);
+            lankaDao.updateLanka(lanka);
+            viestiDao.insertNewViesti(uusiViesti);
 
             String paluuOsoite = "/alue/" + alue.getId() + "/" + lanka.getId() + "?sivu=0";
             res.redirect(paluuOsoite);
@@ -226,7 +228,7 @@ public class Main {
             String kayttajaId = req.params("id");
             HashMap map = new HashMap<>();
             map.put("kayttaja", kayttajaDao.findOne(kayttajaId));
-            map.put("viestit", viestiDao.findAllWithUserId(kayttajaId));
+            map.put("viestit", viestiDao.findViestitWithKayttajaId(kayttajaId));
 
             return new ModelAndView(map, "kayttaja");
         }, new ThymeleafTemplateEngine());
