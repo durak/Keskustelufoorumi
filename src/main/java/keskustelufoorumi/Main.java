@@ -1,9 +1,7 @@
 package keskustelufoorumi;
 
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 import keskustelufoorumi.database.AlueDao;
 import keskustelufoorumi.database.DaoManager;
 import keskustelufoorumi.database.Database;
@@ -14,20 +12,10 @@ import keskustelufoorumi.domain.Alue;
 import keskustelufoorumi.domain.Kayttaja;
 import keskustelufoorumi.domain.Lanka;
 import keskustelufoorumi.domain.Viesti;
-import keskustelufoorumi.ui.TekstiUi;
 import org.jsoup.Jsoup;
 import spark.ModelAndView;
-import spark.Spark;
-import static spark.Spark.get;
 import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
-import static spark.Spark.get;
-import static spark.Spark.get;
-import static spark.Spark.get;
-import static spark.Spark.get;
-import static spark.Spark.get;
-import static spark.Spark.get;
-import static spark.Spark.get;
 
 public class Main {
 
@@ -36,7 +24,7 @@ public class Main {
         /*
          * Valmistelut Herokua varten + SQLite/PostgreSql valinta
          * asetetaan portti jos heroku antaa PORT-ympäristömuuttujan
-         */        
+         */
         if (System.getenv("PORT") != null) {
             port(Integer.valueOf(System.getenv("PORT")));
         }
@@ -65,9 +53,16 @@ public class Main {
 
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
-
+        
+        /*
+         * Uusi keskustelualue
+         */
         post("/", (req, res) -> {
-            String aluenimi = req.queryParams("aluenimi");
+            String aluenimi = stripHtml(req.queryParams("aluenimi"));
+            if (aluenimi.equals("") || aluenimi.length() > 20) {
+                halt(400, "Virheellinen aluenimi: sallittu pituus 1-20 merkkiä.");
+            }
+
             Alue uusiAlue = new Alue(aluenimi);
             alueDao.insertNewInstance(uusiAlue);
             res.redirect("/");
@@ -99,12 +94,13 @@ public class Main {
 
             return new ModelAndView(map, "alue");
         }, new ThymeleafTemplateEngine());
-
+        
+        /*
+         * Virheellinen alueId -> 404
+         */
         before("/alue/:id", (req, res) -> {
             boolean error = false;
-
             int alueId = Integer.parseInt(req.params("id"));
-
             if (alueDao.findOne(alueId) == null) {
                 error = true;
             }
@@ -118,14 +114,19 @@ public class Main {
                 halt(404, "Aluetta ei löytynyt");
             }
         });
-
+        
+        /*
+         * Uusi lanka
+         */
         post("/alue/:id", (req, res) -> {
-            String lankanimi = req.queryParams("lankanimi");
+            String lankanimi = stripHtml(req.queryParams("lankanimi"));
             int alueId = Integer.parseInt(req.params("id"));
+            if (lankanimi.equals("") || lankanimi.length() > 40) {
+                halt(400, "Virheellinen lankanimi: sallittu pituus 1-40 merkkiä.");
+            }
 
             Alue alue = alueDao.findOne(alueId);
             Lanka uusiLanka = new Lanka(lankanimi, alue);
-
             lankaDao.insertNewInstance(uusiLanka);
 
             String paluuOsoite = "/alue/" + alue.getId() + "/" + lankaDao.getMaxId() + "?sivu=0";
@@ -161,30 +162,41 @@ public class Main {
             return new ModelAndView(map, "lanka");
         }, new ThymeleafTemplateEngine());
 
+        /*
+         * Virheellinen lankavalinta -> 404
+         */
         before("/alue/:alue.id/:id", (req, res) -> {
             boolean error = false;
             int lankaId = Integer.parseInt(req.params("id"));
             if (lankaDao.findOne(lankaId) == null) {
-                error = true;                
+                error = true;
             }
             try {
                 int sivu = Integer.parseInt(req.queryParams("sivu"));
             } catch (Exception e) {
                 error = true;
             }
-            
+
             if (error) {
                 halt(404, "Lankaa ei löytynyt");
             }
         });
-
+        
+        /*
+         * Uusi viesti        
+         */
         post("/alue/:alue.id/:id", (req, res) -> {
             int sivu = Integer.parseInt(req.queryParams("sivu"));
-
             int lankaId = Integer.parseInt(req.params("id"));
-            String nimimerkki = req.queryParams("nimimerkki");
-            String sisalto = req.queryParams("sisalto");
-            sisalto = stripHtml(sisalto);
+            String nimimerkki = stripHtml(req.queryParams("nimimerkki"));
+            String sisalto = stripHtml(req.queryParams("sisalto"));
+            
+            if (nimimerkki.equals("") || nimimerkki.length() > 20) {
+                halt(400, "Virheellinen nimimerkki: sallittu pituus 1-20 merkkiä.");
+            }
+            if (sisalto.equals("") || sisalto.length() > 140) {
+                halt(400, "Virheellinen viestisisalto: sallittu pituus 1-140 merkkiä.");
+            }
 
             Lanka lanka = lankaDao.findOne(lankaId);
             Alue alue = lanka.getAlue();
@@ -203,7 +215,7 @@ public class Main {
             viestiDao.insertNewInstance(uusiViesti);
 
             String paluuOsoite = "/alue/" + alue.getId() + "/" + lanka.getId() + "?sivu=0";
-            res.redirect(paluuOsoite);            
+            res.redirect(paluuOsoite);
             return null;
         });
 
