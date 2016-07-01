@@ -12,14 +12,7 @@ public class Database {
 
     private String databaseAddress;
 
-//    public Database() throws ClassNotFoundException {
-//        this.databaseAddress = "jdbc:sqlite:forum.db";
-//    }
 
-// toimiva plain luokka = konstruktori plus alla oleva metodi    
-//    public Connection getConnection() throws SQLException {
-//        return DriverManager.getConnection(databaseAddress);
-//    }
     public Database(String databaseAddress) throws ClassNotFoundException {
         this.databaseAddress = databaseAddress;
         init();

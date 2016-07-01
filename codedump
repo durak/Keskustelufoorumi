@@ -147,3 +147,202 @@
                 <a th:href="${'/alue/' + alue.id + '?sivu=' + edellinen}"><span th:text="${edellinen != null} ? 'edelliset'">edelliset langat</span></a>
                 <a th:href="${'/alue/' + alue.id + '?sivu=' + seuraava}"><span th:text="${seuraava != null} ? 'seuraavat'">seuraavat langat</span></a>
             </p>
+
+
+package keskustelufoorumi.database;
+
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class DatabaseSingleton_EI_KAYTOSSA {
+
+    private String databaseAddress = "jdbc:sqlite:forum.db";
+    private static DatabaseSingleton_EI_KAYTOSSA instance = new DatabaseSingleton_EI_KAYTOSSA();
+    private Connection connection;
+
+    private DatabaseSingleton_EI_KAYTOSSA() {
+    }
+
+    public static DatabaseSingleton_EI_KAYTOSSA getInstance() {
+        return instance;
+    }
+
+//    public Database(String databaseAddress) throws ClassNotFoundException {
+//        this.databaseAddress = databaseAddress;
+//    }
+    public Connection getConnection() throws SQLException {
+        if (connection == null) {
+            try {
+                connection = DriverManager.getConnection(databaseAddress);
+            } catch (SQLException ex) {
+                Logger.getLogger(DaoManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return this.connection;
+    }
+    
+    private Connection getTxConnection() {
+        try {
+            getConnection().setAutoCommit(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return this.connection;
+    }
+}
+
+
+
+//    public Database() throws ClassNotFoundException {
+//        this.databaseAddress = "jdbc:sqlite:forum.db";
+//    }
+
+// toimiva plain luokka = konstruktori plus alla oleva metodi    
+//    public Connection getConnection() throws SQLException {
+//        return DriverManager.getConnection(databaseAddress);
+//    }
+
+
+    /*
+    Multi-Dao transaktiot
+     */
+//    public void teePaivitys(Viesti viesti) throws SQLException {
+//
+//        try {
+//
+//            getConnection().setAutoCommit(false);
+//
+//            Kayttaja kayttaja = viesti.getKayttaja();
+//            Lanka lanka = viesti.getLanka();
+//            Alue alue = lanka.getAlue();
+//
+//            // uusi käyttäjä
+//            if (getKayttajaDao().findOne(kayttaja.getId()) == null) {
+//                getKayttajaDao().insertNewKayttaja(kayttaja);
+//            }
+//
+//            // uusi alue / paivitys
+//            if (getAlueDao().findOne(alue.getId()) == null) {
+//                getAlueDao().insertNewAlue(alue);
+//            } else {
+//                getAlueDao().updateAlue(alue);
+//            }
+//            
+//            // uusi lanka / päivitys
+//            if (getLankaDao().findOne(lanka.getId()) == null) {
+//                getLankaDao().insertNewLanka(lanka);
+//            } else {
+//                getLankaDao().updateLanka(lanka);
+//            }
+//
+//            getViestiDao().insertNewViesti(viesti);
+//
+//            this.connection.commit();
+//
+//        } catch (Exception e) {
+//            if (this.connection != null) {
+//                this.connection.rollback();
+//            }
+//        } finally {
+//            if (this.connection != null) {
+//                this.connection.setAutoCommit(true);
+//                this.connection.close();
+//
+//            }
+//
+//        }
+
+//    }
+
+    /*
+    YHTEYDENPITO TIETOKANTAAN
+     */
+    private Connection getConnection() throws SQLException {
+        if (this.connection == null) {
+            this.connection = database.getConnection();
+        }
+
+        return this.connection;
+    }
+
+    private Connection getTxConnection() {
+        try {
+            getConnection().setAutoCommit(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return this.connection;
+    }
+
+    public void closeConnection() throws SQLException {
+        this.connection.close();
+    }
+
+
+//    public List<Lanka> findAllWithAlueId(Integer key) throws SQLException {
+//        Connection connection = database.getConnection();
+//        String query = "SELECT * FROM Lanka WHERE alue_id = ?";
+//        PreparedStatement stmt = connection.prepareStatement(query);
+//        stmt.setObject(1, key);
+//        
+//        ResultSet rs = stmt.executeQuery();
+//        List<Lanka> langat = new ArrayList<>();
+//
+//        while (rs.next()) {
+//            int id = rs.getInt("id");
+//            String lankanimi = rs.getString("lankanimi");
+//            int lankaviestimaara = rs.getInt("lankaviestimaara");
+//            int alueId = rs.getInt("alue_id");
+//            Timestamp viimeisinAika = rs.getTimestamp("viimeisin_aika");
+//            langat.add(new Lanka(id, lankanimi, alueDao.findOne(alueId), lankaviestimaara, viimeisinAika));
+//        }
+//
+//        rs.close();
+//        stmt.close();
+//        connection.close();
+//
+//        return langat;
+//    }
+    /*
+     * järjestetty ja limitoitu versio
+     */
+
+
+    public void insertNewAlue(Alue alue) throws SQLException {
+        String updateQuery = "INSERT INTO Alue (aluenimi, alueviestimaara, viimeisin_aika) VALUES (?, ?, ?);";
+        Object[] params = {alue.getAluenimi(), alue.getAlueviestimaara(), alue.getViimeisinAika()};
+        update(updateQuery, params);
+    }
+
+    public void updateAlue(Alue alue) throws SQLException {
+        String updateQuery = "UPDATE Alue SET alueviestimaara = ?, viimeisin_aika = ? WHERE id = ?;";
+        Object[] params = {alue.getAlueviestimaara(), alue.getViimeisinAika(), alue.getId()};
+        update(updateQuery, params);
+    }
+
+    public void insertNewKayttaja(Kayttaja kayttaja) throws SQLException {
+        String updateQuery = "INSERT INTO Kayttaja VALUES (?);";
+        String[] params = {kayttaja.getId()};
+        update(updateQuery, params);
+    }
+
+    public void insertNewLanka(Lanka lanka) throws SQLException {
+        String updateQuery = "INSERT INTO Lanka (lankanimi, alue_id, lankaviestimaara, viimeisin_aika) VALUES (?, ?, ?, ?);";
+        Object[] params = {lanka.getLankanimi(), lanka.getAlue().getId(), lanka.getLankaviestimaara(), lanka.getViimeisinAika()};
+        update(updateQuery, params);
+    }
+
+    public void updateLanka(Lanka lanka) throws SQLException {
+        String updateQuery = "UPDATE Lanka SET lankaviestimaara = ?, viimeisin_aika = ? WHERE id = ?;";
+        Object[] params = {lanka.getLankaviestimaara(), lanka.getViimeisinAika(), lanka.getId()};
+        update(updateQuery, params);
+    }
+
+    public void insertNewViesti(Viesti viesti) throws SQLException {
+        String updateQuery = "INSERT INTO Viesti (sisalto, kayttaja_id, lanka_id, lahetysaika) VALUES (?, ?, ?, ?);";
+        Object[] params = {viesti.getSisalto(), viesti.getKayttaja().getId(), viesti.getLanka().getId(), viesti.getLahetysaika()};
+        update(updateQuery, params);
+    }

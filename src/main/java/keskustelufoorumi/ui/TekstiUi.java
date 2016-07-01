@@ -138,7 +138,7 @@ public class TekstiUi {
 
         Alue uusiAlue = new Alue(aluenimi);
         uusiAlue.setViimeisinAika(getTimestamp());
-        daoManager.getAlueDao().insertNewAlue(uusiAlue);
+        daoManager.getAlueDao().insertNewInstance(uusiAlue);
         int maxId = daoManager.getAlueDao().getMaxId();
         uusiAlue.setId(maxId);
         this.alue = uusiAlue;

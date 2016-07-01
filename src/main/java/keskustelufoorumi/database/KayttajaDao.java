@@ -106,39 +106,23 @@ public class KayttajaDao implements Dao<Kayttaja, String> {
         String query = "DELETE FROM Kayttaja WHERE id = ?;";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setObject(1, key);
-
         stmt.executeUpdate();
 
         stmt.close();
-
         connection.close();
-    }
-
-    
-    public List<Kayttaja> findAllWhereXIsK(String x, String key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void update(String updateQuery, Object... params) throws SQLException {
         Connection connection = database.getConnection();
-
         PreparedStatement stmt = connection.prepareStatement(updateQuery);
-
         for (int i = 0; i < params.length; i++) {
             stmt.setObject(i + 1, params[i]);
         }
-
         stmt.executeUpdate();
 
         stmt.close();
         connection.close();
-    }
-
-    public void insertNewKayttaja(Kayttaja kayttaja) throws SQLException {
-        String updateQuery = "INSERT INTO Kayttaja VALUES (?);";
-        String[] params = {kayttaja.getId()};
-        update(updateQuery, params);
     }
 
     @Override

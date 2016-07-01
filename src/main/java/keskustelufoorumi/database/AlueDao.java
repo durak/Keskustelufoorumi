@@ -16,34 +16,31 @@ public class AlueDao implements Dao<Alue, Integer> {
     public int getMaxId() throws SQLException {
         Connection connection = database.getConnection();
         String query = "SELECT max(id) AS max_id FROM Alue;";
-
         PreparedStatement stmt = connection.prepareStatement(query);
-
         ResultSet rs = stmt.executeQuery();
-                
+
         boolean hasOne = rs.next();
         if (!hasOne) {
             return -1;
         }
-        
+
         int maxId = rs.getInt("max_id");
-        
+
         rs.close();
         stmt.close();
         connection.close();
-        
+
         return maxId;
     }
 
     @Override
     public Alue findOne(Integer key) throws SQLException {
         Connection connection = database.getConnection();
-
         String query = "SELECT * FROM Alue WHERE id = ?";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setObject(1, key);
-
         ResultSet rs = stmt.executeQuery();
+
         boolean hasOne = rs.next();
         if (!hasOne) {
             return null;
@@ -65,10 +62,8 @@ public class AlueDao implements Dao<Alue, Integer> {
     @Override
     public List<Alue> findAll() throws SQLException {
         Connection connection = database.getConnection();
-
         String query = "SELECT * FROM Alue;";
         PreparedStatement stmt = connection.prepareStatement(query);
-
         ResultSet rs = stmt.executeQuery();
         List<Alue> alueet = new ArrayList<>();
 
@@ -126,19 +121,12 @@ public class AlueDao implements Dao<Alue, Integer> {
         return alueet;
     }
 
-    
-    public List<Alue> findAllWhereXIsK(String x, Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     @Override
     public void delete(Integer key) throws SQLException {
         Connection connection = database.getConnection();
-
         String query = "DELETE FROM Alue WHERE aluenimi = ?;";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setObject(1, key);
-
         stmt.executeUpdate();
 
         stmt.close();
@@ -158,18 +146,6 @@ public class AlueDao implements Dao<Alue, Integer> {
 
         stmt.close();
         connection.close();
-    }
-
-    public void insertNewAlue(Alue alue) throws SQLException {
-        String updateQuery = "INSERT INTO Alue (aluenimi, alueviestimaara, viimeisin_aika) VALUES (?, ?, ?);";
-        Object[] params = {alue.getAluenimi(), alue.getAlueviestimaara(), alue.getViimeisinAika()};
-        update(updateQuery, params);
-    }
-
-    public void updateAlue(Alue alue) throws SQLException {
-        String updateQuery = "UPDATE Alue SET alueviestimaara = ?, viimeisin_aika = ? WHERE id = ?;";
-        Object[] params = {alue.getAlueviestimaara(), alue.getViimeisinAika(), alue.getId()};
-        update(updateQuery, params);
     }
 
     @Override

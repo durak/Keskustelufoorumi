@@ -269,11 +269,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         connection.close();
     }
 
-    public void insertNewViesti(Viesti viesti) throws SQLException {
-        String updateQuery = "INSERT INTO Viesti (sisalto, kayttaja_id, lanka_id, lahetysaika) VALUES (?, ?, ?, ?);";
-        Object[] params = {viesti.getSisalto(), viesti.getKayttaja().getId(), viesti.getLanka().getId(), viesti.getLahetysaika()};
-        update(updateQuery, params);
-    }
+
 
     @Override
     public void insertNewInstance(Viesti viesti) throws SQLException {
