@@ -24,8 +24,4 @@ public interface LankaDao {
     // Taulussa jo olevan langan tietojen päivitys
     void updateLanka(Lanka lanka) throws SQLException;
 
-//    List<Lanka> findAllIn(Collection<Integer> keys) throws SQLException;
-//    void delete(Integer key) throws SQLException;
-//    List<Lanka> findAllWithAlueId(Integer alueId) throws SQLException;    
-//    List<Lanka> findAll() throws SQLException;
 }

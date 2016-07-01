@@ -21,6 +21,4 @@ public interface AlueDao {
     // Päivitetään tauluun alueen tiedot
     void updateInstance(Alue alue) throws SQLException;
 
-    //    void delete(Integer key) throws SQLException;
-    //    List<Alue> findAllIn(Collection<Integer> keys) throws SQLException;
 }

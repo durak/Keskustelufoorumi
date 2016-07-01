@@ -14,9 +14,6 @@ public class Viesti {
     private Timestamp lahetysaika;
     private String lahetysaikaFormatted;
 
-//    public Viesti() {
-//
-//    }
 
     /*
      * Konstruktori tietokannasta luettavaa viestiä varten
@@ -31,7 +28,7 @@ public class Viesti {
     }
 
     /*
-    * Konstruktori, jossa automaattinene timestamp
+     * Konstruktori uutta viestiä varten
      */
     public Viesti(String sisalto, Kayttaja kayttaja, Lanka lanka) {
         this.sisalto = sisalto;
@@ -85,6 +82,7 @@ public class Viesti {
 
     public void setLahetysaika(Timestamp lahetysaika) {
         this.lahetysaika = lahetysaika;
+        this.lahetysaikaFormatted = new SimpleDateFormat("yyyy-MM-dd @ HH:mm").format(lahetysaika);
     }
 
 }

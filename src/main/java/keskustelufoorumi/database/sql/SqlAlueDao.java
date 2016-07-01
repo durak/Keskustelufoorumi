@@ -104,7 +104,6 @@ public class SqlAlueDao implements AlueDao {
      * findAllWithQueryAndParams: lukukyselyt
      * update: kirjoittavat kyselyt
      */
-    
     private void update(String updateQuery, Object... params) throws SQLException {
         Connection connection = database.getConnection();
         PreparedStatement stmt = connection.prepareStatement(updateQuery);
@@ -119,56 +118,4 @@ public class SqlAlueDao implements AlueDao {
         connection.close();
     }
 
-    /*
-     * Käytöstä poistetut metodit   
-     */
-    //    @Override
-//    public void delete(Integer key) throws SQLException {
-//        Connection connection = database.getConnection();
-//        String query = "DELETE FROM Alue WHERE aluenimi = ?;";
-//        PreparedStatement stmt = connection.prepareStatement(query);
-//        stmt.setObject(1, key);
-//        stmt.executeUpdate();
-//
-//        stmt.close();
-//        connection.close();
-//    }
-    //    @Override
-//    public List<Alue> findAllIn(Collection<Integer> keys) throws SQLException {
-//        if (keys.isEmpty()) {
-//            return new ArrayList<>();
-//        }
-//
-//        StringBuilder muuttujat = new StringBuilder("?");
-//        for (int i = 0; i < keys.size(); i++) {
-//            muuttujat.append(", ?");
-//        }
-//
-//        Connection connection = database.getConnection();
-//        String query = "SELECT * FROM Alue WHERE id IN (" + muuttujat + ");";
-//        PreparedStatement stmt = connection.prepareStatement(query);
-//
-//        int laskuri = 1;
-//        for (Integer key : keys) {
-//            stmt.setObject(laskuri, key);
-//            laskuri++;
-//        }
-//
-//        ResultSet rs = stmt.executeQuery();
-//        List<Alue> alueet = new ArrayList<>();
-//
-//        while (rs.next()) {
-//            int id = rs.getInt("id");
-//            String aluenimi = rs.getString("aluenimi");
-//            int alueviestimaara = rs.getInt("alueviestimaara");
-//            Timestamp viimeisinAika = rs.getTimestamp("viimeisin_aika");
-//            alueet.add(new Alue(id, aluenimi, alueviestimaara, viimeisinAika));
-//        }
-//
-//        rs.close();
-//        stmt.close();
-//        connection.close();
-//
-//        return alueet;
-//    }
 }

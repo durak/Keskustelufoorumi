@@ -21,10 +21,4 @@ public interface ViestiDao {
     // Uusi viesti tauluun
     void insertNewViesti(Viesti viesti) throws SQLException;
 
-//    void delete(Integer key) throws SQLException;
-    //    List<Viesti> findAll() throws SQLException;
-    //    List<Viesti> findAllIn(Collection<Integer> keys) throws SQLException;
-    //    List<Viesti> findAllWithLankaId(Integer lankaId) throws SQLException;
-    //    Viesti findOne(Integer key) throws SQLException;
-    //    void updateViesti(Viesti viesti) throws SQLException;
 }

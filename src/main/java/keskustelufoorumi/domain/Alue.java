@@ -11,6 +11,11 @@ public class Alue {
     private Timestamp viimeisinAika;
     private String viimeisinAikaFormatted;
 
+
+      
+    /*
+     * Konstruktori tietokannasta noudettavaa tietoa varten
+     */
     public Alue(int id, String aluenimi, int alueviestimaara, Timestamp viimeisinAika) {
         this.id = id;
         this.aluenimi = aluenimi;
@@ -23,7 +28,9 @@ public class Alue {
         }
 
     }
-
+    /*
+     * Konstruktori uutta aluetta varten
+     */
     public Alue(String aluenimi) {
         this.aluenimi = aluenimi;
         this.alueviestimaara = 0;

@@ -12,9 +12,9 @@ public class Lanka {
     private Timestamp viimeisinAika;
     private String viimeisinAikaFormatted;
 
-    public Lanka() {
-    }
-
+    /*
+     * Konstruktori tietokannasta noudettavaa tietoa varten
+     */
     public Lanka(int id, String lankanimi, Alue alue, int lankaviestimaara, Timestamp viimeisinAika) {
         this.id = id;
         this.lankanimi = lankanimi;
@@ -28,6 +28,9 @@ public class Lanka {
         }
     }
 
+    /*
+     * Konstruktori uutta lankaa varten
+     */
     public Lanka(String lankanimi, Alue alue) {
         this.lankanimi = lankanimi;
         this.alue = alue;
