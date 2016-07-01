@@ -1,9 +1,8 @@
 package keskustelufoorumi.database;
 
-import java.sql.SQLException;
-import java.util.Collection;
-import java.util.List;
 import keskustelufoorumi.domain.Alue;
+import java.sql.SQLException;
+import java.util.List;
 
 public interface AlueDao {
 

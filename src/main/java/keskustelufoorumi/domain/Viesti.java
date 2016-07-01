@@ -14,9 +14,9 @@ public class Viesti {
     private Timestamp lahetysaika;
     private String lahetysaikaFormatted;
 
-    public Viesti() {
-
-    }
+//    public Viesti() {
+//
+//    }
 
     /*
      * Konstruktori tietokannasta luettavaa viestiä varten
@@ -26,19 +26,8 @@ public class Viesti {
         this.sisalto = sisalto;
         this.kayttaja = kayttaja;
         this.lanka = lanka;
-        this.lahetysaika = lahetysaika;                        
-        this.lahetysaikaFormatted = new SimpleDateFormat("yyyy-MM-dd @ HH:mm").format(lahetysaika);                        
-    }
-
-    /*
-     * Konstruktori uuden viestin luomista varten, tietokannanhallintajärjestelmä asettaa id-numeron
-     */
-    public Viesti(String sisalto, Kayttaja kayttaja, Lanka lanka, Timestamp lahetysaika) {
-        this.sisalto = sisalto;
-        this.kayttaja = kayttaja;
-        this.lanka = lanka;
         this.lahetysaika = lahetysaika;
-        this.lahetysaikaFormatted = new SimpleDateFormat("yyyy-MM-dd @ HH:mm").format(lahetysaika);                        
+        this.lahetysaikaFormatted = new SimpleDateFormat("yyyy-MM-dd @ HH:mm").format(lahetysaika);
     }
 
     /*
@@ -49,7 +38,7 @@ public class Viesti {
         this.kayttaja = kayttaja;
         this.lanka = lanka;
         this.lahetysaika = new Timestamp(new Date().getTime());
-        this.lahetysaikaFormatted = new SimpleDateFormat("yyyy-MM-dd @ HH:mm").format(this.lahetysaika);                        
+        this.lahetysaikaFormatted = new SimpleDateFormat("yyyy-MM-dd @ HH:mm").format(this.lahetysaika);
     }
 
     // GETTERIT

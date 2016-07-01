@@ -1,9 +1,7 @@
 package keskustelufoorumi.database;
 
-import java.sql.SQLException;
-import java.util.Collection;
-import java.util.List;
 import keskustelufoorumi.domain.Kayttaja;
+import java.sql.SQLException;
 
 public interface KayttajaDao {
 

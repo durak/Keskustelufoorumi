@@ -1,9 +1,8 @@
 package keskustelufoorumi.database;
 
-import java.sql.SQLException;
-import java.util.Collection;
-import java.util.List;
 import keskustelufoorumi.domain.Viesti;
+import java.sql.SQLException;
+import java.util.List;
 
 public interface ViestiDao {
 
@@ -18,7 +17,7 @@ public interface ViestiDao {
 
     // Viimeisimmän viestin Id     
     int findLatestId() throws SQLException;
-    
+
     // Uusi viesti tauluun
     void insertNewViesti(Viesti viesti) throws SQLException;
 

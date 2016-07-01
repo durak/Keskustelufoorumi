@@ -1,7 +1,7 @@
 package keskustelufoorumi.database;
 
-import java.sql.SQLException;
 import keskustelufoorumi.database.sql.SqlDaoManager;
+import java.sql.SQLException;
 
 public abstract class DaoManager {
 
