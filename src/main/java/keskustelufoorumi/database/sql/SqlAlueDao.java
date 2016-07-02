@@ -44,7 +44,7 @@ public class SqlAlueDao implements AlueDao {
     @Override
     public List<Alue> findAll() throws SQLException {
         Connection connection = database.getConnection();
-        String query = "SELECT * FROM Alue;";
+        String query = "SELECT * FROM Alue ORDER BY id ASC;";
         PreparedStatement stmt = connection.prepareStatement(query);
         ResultSet rs = stmt.executeQuery();
         List<Alue> alueet = new ArrayList<>();

@@ -163,6 +163,12 @@ public class SparkConfig {
          */
         before("/alue/:alue.id/:id", (req, res) -> {
             boolean error = false;
+            
+            int alueId = Integer.parseInt(req.params("alue.id"));
+            if (alueDao.findOne(alueId) == null) {
+                halt(404, "Aluetta ei löytynyt");
+            }
+            
             int lankaId = Integer.parseInt(req.params("id"));
             if (lankaDao.findOne(lankaId) == null) {
                 error = true;
